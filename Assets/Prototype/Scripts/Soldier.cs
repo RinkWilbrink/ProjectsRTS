@@ -73,25 +73,37 @@ public class Soldier : MonoBehaviour
 
         if(Input.GetKeyDown(KeyCode.O))
         {
+            /*
             Destroy(gameObject.GetComponent<SphereCollider>());
             SphereCollider m_collider = gameObject.AddComponent<SphereCollider>();
-            //m_collider.isTrigger = true;
+            m_collider.isTrigger = true;
             m_collider.center = Vector3.zero;
-            m_collider.radius = 5f;
-            //Do the collision checks
+            m_collider.radius = 5f; */
+            GameObject[] EnemyArray = GameObject.FindGameObjectsWithTag(attackTag);
+            GetClosestEnemy(EnemyArray);
         }
     }
 
-	private void Die()
-	{
-		Debug.Log(gameObject.name + " has Died");
-	}
-
-    private void OnCollisionEnter(Collision collision)
+    private Transform GetClosestEnemy(GameObject[] enemies)
     {
-        if (collision.collider.tag == attackTag)
+        Transform bestTarget = null;
+        float closestDistanceSqr = Mathf.Infinity;
+        Vector3 currentPosition = transform.position;
+        foreach (GameObject potentialTarget in enemies)
         {
-            Debug.Log("I'm going to kill you " + attackTag + " scum");
+            Vector3 directionToTarget = potentialTarget.transform.position - currentPosition;
+            float distanceToTarget = directionToTarget.sqrMagnitude;
+            if (distanceToTarget < closestDistanceSqr)
+            {
+                closestDistanceSqr = distanceToTarget;
+                bestTarget = potentialTarget.transform;
+            }
         }
+        return bestTarget; // Return the best target
+    }
+
+    private void Die()
+    {
+        Debug.Log(gameObject.name + " has Died");
     }
 }

@@ -509,8 +509,6 @@ MonoBehaviour:
   damage: 1
   speedMultiplier: 1
   allowedToMove: 1
-  position: {x: 0, y: 0, z: 0}
-  attackTag: 
 --- !u!1 &2139581329
 GameObject:
   m_ObjectHideFlags: 0
@@ -543,15 +541,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 594ab3a097bc2294ebcc978a9810cfb6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Name: 
-  m_EditorClassIdentifier: 
   soldierType: 0
   Health: 1
   damage: 1
   speedMultiplier: 1
   allowedToMove: 0
-  position: {x: 0, y: 0, z: 0}
-  attackTag: 
 --- !u!65 &2139581331
 BoxCollider:
   m_ObjectHideFlags: 0
