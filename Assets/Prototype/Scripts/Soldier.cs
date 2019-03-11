@@ -51,18 +51,47 @@ public class Soldier : MonoBehaviour
     
     void Update()
     {
-		position.x += speedMultiplier * Time.deltaTime;
+        #region Movement
+        if(Input.GetKey(KeyCode.A))
+        {
+            position.x -= speedMultiplier * Time.deltaTime;
+        }
+        if(Input.GetKey(KeyCode.D))
+        {
+            position.x += speedMultiplier * Time.deltaTime;
+        }
 
-		if(Health <= 0)
+        //position.x += speedMultiplier * Time.deltaTime;
+        #endregion
+
+        if (Health <= 0)
 		{
 			Die();
 		}
 		//Update the position of the object
 		transform.position = new Vector3(position.x, position.y, position.z);
+
+        if(Input.GetKeyDown(KeyCode.O))
+        {
+            Destroy(gameObject.GetComponent<SphereCollider>());
+            SphereCollider m_collider = gameObject.AddComponent<SphereCollider>();
+            //m_collider.isTrigger = true;
+            m_collider.center = Vector3.zero;
+            m_collider.radius = 5f;
+            //Do the collision checks
+        }
     }
 
 	private void Die()
 	{
 		Debug.Log(gameObject.name + " has Died");
 	}
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.collider.tag == attackTag)
+        {
+            Debug.Log("I'm going to kill you " + attackTag + " scum");
+        }
+    }
 }
