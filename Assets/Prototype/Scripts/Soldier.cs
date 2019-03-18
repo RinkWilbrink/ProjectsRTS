@@ -25,6 +25,7 @@ public class Soldier : MonoBehaviour
 	// Private Variables
 	private Vector3 position;
 	private string attackTag;
+    private GameObject currentTarget;
 
     void Start()
     {
@@ -69,6 +70,11 @@ public class Soldier : MonoBehaviour
 		//Update the position of the object
 		transform.position = new Vector3(position.x, position.y, position.z);
 
+        if(Input.GetKeyDown(KeyCode.P))
+        {
+
+        }
+
         if(Input.GetKeyDown(KeyCode.O) && gameObject.tag != "Mage")
         {
             /*
@@ -78,7 +84,7 @@ public class Soldier : MonoBehaviour
             m_collider.center = Vector3.zero;
             m_collider.radius = 5f; */
             GameObject[] EnemyArray = GameObject.FindGameObjectsWithTag(attackTag);
-            GetClosestEnemy(EnemyArray);
+            currentTarget = GetClosestEnemy(EnemyArray);
         }
     }
 
@@ -104,5 +110,10 @@ public class Soldier : MonoBehaviour
     private void Die()
     {
         Debug.Log(gameObject.name + " has Died");
+    }
+
+    private float makePositive(float toPositive)
+    {
+        return toPositive;
     }
 }
