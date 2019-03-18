@@ -231,7 +231,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 92323e2d71effba4abc2d5d07a178b64, type: 2}
+  - {fileID: 2100000, guid: 497bb8452feafc84bb93945161ba47a7, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -384,8 +384,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ce7100eda89b7a4a9538859cffa477f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  soldier: {fileID: 2139581329}
-  kc_SpawnSoldier: 32
 --- !u!4 &605556473
 Transform:
   m_ObjectHideFlags: 0
@@ -501,14 +499,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 686028066}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 594ab3a097bc2294ebcc978a9810cfb6, type: 3}
+  m_Script: {fileID: 11500000, guid: 018e522fd5d7a74428e92a7710ce42ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  soldierType: 0
+  soldierType: 3
   Health: 1
   damage: 1
   speedMultiplier: 1
-  allowedToMove: 1
+  autoMovement: 0
 --- !u!1 &2139581329
 GameObject:
   m_ObjectHideFlags: 0
@@ -538,14 +536,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 2139581329}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 594ab3a097bc2294ebcc978a9810cfb6, type: 3}
+  m_Script: {fileID: 11500000, guid: 018e522fd5d7a74428e92a7710ce42ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  soldierType: 0
+  soldierType: 1
   Health: 1
   damage: 1
   speedMultiplier: 1
-  allowedToMove: 0
+  autoMovement: 0
 --- !u!65 &2139581331
 BoxCollider:
   m_ObjectHideFlags: 0

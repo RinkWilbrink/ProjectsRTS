@@ -20,7 +20,7 @@ public class Soldier : MonoBehaviour
 	[SerializeField] private int speedMultiplier;
 
 	[Header("Debug attributes")]
-	[SerializeField] private bool allowedToMove;
+	[SerializeField] private bool autoMovement;
 
 	// Private Variables
 	private Vector3 position;
@@ -32,11 +32,7 @@ public class Soldier : MonoBehaviour
 		position.x = transform.position.x;
 		position.y = transform.position.y;
 		position.z = transform.position.z;
-		// Settings for individual sides
-		if(!allowedToMove)
-		{
-			speedMultiplier = 0;
-		}
+        //Settings for individual sides
 		switch (gameObject.tag)
 		{
 			case "Swordsmen":
@@ -52,16 +48,18 @@ public class Soldier : MonoBehaviour
     void Update()
     {
         #region Movement
-        if(Input.GetKey(KeyCode.A))
+        if(Input.GetKey(KeyCode.A) && !autoMovement)
         {
             position.x -= speedMultiplier * Time.deltaTime;
         }
-        if(Input.GetKey(KeyCode.D))
+        if(Input.GetKey(KeyCode.D) && !autoMovement)
         {
             position.x += speedMultiplier * Time.deltaTime;
         }
-
-        //position.x += speedMultiplier * Time.deltaTime;
+        if(autoMovement) // Let the soldiers move on their own
+        {
+            position.x += speedMultiplier * Time.deltaTime;
+        }
         #endregion
 
         if (Health <= 0)
@@ -71,7 +69,7 @@ public class Soldier : MonoBehaviour
 		//Update the position of the object
 		transform.position = new Vector3(position.x, position.y, position.z);
 
-        if(Input.GetKeyDown(KeyCode.O))
+        if(Input.GetKeyDown(KeyCode.O) && gameObject.tag != "Mage")
         {
             /*
             Destroy(gameObject.GetComponent<SphereCollider>());
@@ -84,9 +82,9 @@ public class Soldier : MonoBehaviour
         }
     }
 
-    private Transform GetClosestEnemy(GameObject[] enemies)
+    private GameObject GetClosestEnemy(GameObject[] enemies)
     {
-        Transform bestTarget = null;
+        GameObject bestTarget = null;
         float closestDistanceSqr = Mathf.Infinity;
         Vector3 currentPosition = transform.position;
         foreach (GameObject potentialTarget in enemies)
@@ -96,9 +94,10 @@ public class Soldier : MonoBehaviour
             if (distanceToTarget < closestDistanceSqr)
             {
                 closestDistanceSqr = distanceToTarget;
-                bestTarget = potentialTarget.transform;
+                bestTarget = potentialTarget;
             }
         }
+        Debug.Log("The closest target is: " + bestTarget);
         return bestTarget; // Return the best target
     }
 
