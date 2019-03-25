@@ -2,17 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameController : MonoBehaviour
-{
+public class GameController : MonoBehaviour {
     public int points;
-    
-    void Start()
-    {
-        
+
+    void Start() {
+
     }
 
-    void Update()
-    {
-        
+    void Update() {
+
     }
 }
