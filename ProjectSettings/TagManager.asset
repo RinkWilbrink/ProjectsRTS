@@ -4,6 +4,9 @@
 TagManager:
   serializedVersion: 2
   tags:
+  - Spell
+  - DamageSpell
+  - HealingSpell
   - Swordsmen
   - Mage
   layers:
@@ -16,7 +19,7 @@ TagManager:
   - 
   - 
   - PostProcessing
-  - 
+  - Characters
   - 
   - 
   - 
