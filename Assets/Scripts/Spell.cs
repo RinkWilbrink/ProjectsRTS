@@ -25,9 +25,9 @@ public class Spell : MonoBehaviour {
 
     private float timer;
     void Update() {
-        if ( game.points < requiredAmount )
+        if ( game.playerPoints < requiredAmount )
             sprite.color = notEnoughCredits;
-        else if ( game.points >= requiredAmount )
+        else if ( game.playerPoints >= requiredAmount )
             sprite.color = standardColor;
         if ( !canCastSpell )
             timer += Time.deltaTime;
@@ -48,11 +48,11 @@ public class Spell : MonoBehaviour {
     }
 
     public void PurchaseSpell() {
-        if ( game.points >= requiredAmount && timer >= coolDown && !canCastSpell ) {
+        if ( game.playerPoints >= requiredAmount && timer >= coolDown && !canCastSpell ) {
             //int i = System.Convert.ToInt16(EventSystem.current.currentSelectedGameObject.name);
             sprite.fillAmount = 0;
             //print("Button name: " + i);
-            game.points -= requiredAmount;
+            game.playerPoints -= requiredAmount;
             timer = 0f;
             canCastSpell = true;
             //Instantiate(objectToSpawn, spawnPos.position, spawnPos.rotation);

@@ -8,12 +8,14 @@ public class Looter : MonoBehaviour {
     [SerializeField, Range(1, 20)] private float healthPoints = 5;
     [SerializeField] private Transform basePos;
     private GameController game;
+    private EnemyBehaviour enemyBehaviour;
     private Transform centerMine;
     private bool isGathering = false;
     private bool flipper;
 
-    void Start() {
+    private void Start() {
         game = FindObjectOfType<GameController>();
+        enemyBehaviour = FindObjectOfType<EnemyBehaviour>();
         basePos = GameObject.Find("Base0" + factionIndex).GetComponent<Transform>();
         centerMine = GameObject.Find("CenterMine").GetComponent<Transform>();
         gameObject.name = "LooterFaction" + factionIndex;
@@ -21,15 +23,16 @@ public class Looter : MonoBehaviour {
             flipper = true;
             GetComponent<SpriteRenderer>().flipX = true;
             movementSpeed *= -1;
+            enemyBehaviour.looterUnits++;
         }
         maxHP = healthPoints;
     }
 
     float timer = 0f;
     bool abool = false;
-    void Update() {
+    private void Update() {
         if ( healthPoints <= 0 )
-            Destroy(gameObject);
+            Dead();
         if ( isGathering )
             timer += Time.deltaTime;
         if ( timer > 3f && !abool ) {
@@ -49,11 +52,13 @@ public class Looter : MonoBehaviour {
         } else if ( Vector3.Distance(transform.position, centerMine.position) > centerMine.localScale.x && !isGathering ) {
             transform.Translate(Vector2.right * movementSpeed * Time.deltaTime);
         }
-        print(game.points);
+        print(game.playerPoints);
         if ( isGathering && Vector3.Distance(transform.position, basePos.position) < basePos.localScale.x ) {
             timer = 0f;
             if ( factionIndex == 1 )
-                game.points += 10;
+                game.playerPoints += 10;
+            else if ( factionIndex == 2 )
+                game.enemyPoints += 10;
             isGathering = false;
             abool = false;
             flipper = !flipper;
@@ -82,4 +87,8 @@ public class Looter : MonoBehaviour {
         }
     }
 
+    private void Dead() {
+        enemyBehaviour.looterUnits--;
+        Destroy(gameObject);
+    }
 }

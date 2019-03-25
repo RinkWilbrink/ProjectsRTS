@@ -1,25 +1,23 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
 public class Unit : MonoBehaviour {
-    GameController game;
-    private UnityEngine.UI.Image sprite;
     [Header("Cooldown for when the unit is bought")]
     [SerializeField] private float coolDown = 6f;
     [Header("The required points to buy this unit")]
     [SerializeField] private int requiredAmount;
     [Space(2)]
-    [Header("Where this unit will spawn | Will be deleted from here later!")]
-    [SerializeField] private Transform spawnPos;
     [Header("Unit to spawn/buy")]
     [SerializeField] private GameObject objectToSpawn;
     [Header("Give a color when the player doesn't have enough credits")]
     [SerializeField] private Color notEnoughCredits;
-    private bool boughtUnit = true;
     private Color standardColor;
-
+    private Image sprite;
+    private bool boughtUnit = true;
+    private GameController game;
 
     void Start() {
         game = FindObjectOfType<GameController>();
@@ -29,9 +27,9 @@ public class Unit : MonoBehaviour {
 
     private float timer;
     void Update() {
-        if ( game.points < requiredAmount )
+        if ( game.playerPoints < requiredAmount )
             sprite.color = notEnoughCredits;
-        else if ( game.points >= requiredAmount )
+        else if ( game.playerPoints >= requiredAmount )
             sprite.color = standardColor;
         if ( boughtUnit )
             timer += Time.deltaTime;
@@ -40,14 +38,14 @@ public class Unit : MonoBehaviour {
     }
 
     public void PurchaseUnit() {
-        if ( game.points >= requiredAmount && timer >= coolDown ) {
+        if ( game.playerPoints >= requiredAmount && timer >= coolDown ) {
             //int i = System.Convert.ToInt16(EventSystem.current.currentSelectedGameObject.name);
             sprite.fillAmount = 0;
             //print("Button name: " + i);
-            game.points -= requiredAmount;
+            game.playerPoints -= requiredAmount;
             boughtUnit = true;
             timer = 0f;
-            Instantiate(objectToSpawn, spawnPos.position, spawnPos.rotation);
+            Instantiate(objectToSpawn, game.factionSpawnPos[0].position, game.factionSpawnPos[0].rotation);
             Debug.Log("Bought unit");
         }
     }
