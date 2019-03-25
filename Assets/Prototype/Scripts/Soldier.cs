@@ -25,6 +25,10 @@ public class Soldier : MonoBehaviour
     // Private Variables
     private Vector3 position;
     private string attackTag;
+    private GameObject TargetToAttack;
+    private float maxAttackDistance;
+
+    List<targetAttacking> l_attackTargets = new List<targetAttacking>();
 
     void Start()
     {
@@ -32,6 +36,7 @@ public class Soldier : MonoBehaviour
         position.x = transform.position.x;
         position.y = transform.position.y;
         position.z = transform.position.z;
+
         //Settings for individual sides
         switch (gameObject.tag)
         {
@@ -43,6 +48,12 @@ public class Soldier : MonoBehaviour
                 attackTag = "Swordsmen";
                 break;
         }
+
+        //Add all the classes that need have the attack function
+        l_attackTargets.Add( new targetAttacking( null ) ); // Looter
+        l_attackTargets.Add( new targetAttacking( new Melee() ) ); // Melee soldier
+        l_attackTargets.Add( new targetAttacking( new Archer() ) ); // Archer soldier
+        l_attackTargets.Add( new targetAttacking( new SpellCaster() ) ); // Spell Caster
     }
 
     void Update()
@@ -62,27 +73,36 @@ public class Soldier : MonoBehaviour
         }
         #endregion
 
+        //Attack target
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            l_attackTargets[(int)soldierType].Attack();
+        }
+        
         if (Health <= 0)
         {
             Die();
         }
+
         //Update the position of the object
         transform.position = new Vector3(position.x, position.y, position.z);
 
-        if (Input.GetKeyDown(KeyCode.O) && gameObject.tag != "Mage")
+        if (Input.GetKeyDown(KeyCode.O))
         {
-            /*
-            Destroy(gameObject.GetComponent<SphereCollider>());
-            SphereCollider m_collider = gameObject.AddComponent<SphereCollider>();
-            m_collider.isTrigger = true;
-            m_collider.center = Vector3.zero;
-            m_collider.radius = 5f; */
             GameObject[] EnemyArray = GameObject.FindGameObjectsWithTag(attackTag);
-            GetClosestEnemy(EnemyArray);
+            TargetToAttack = GetClosestEnemy(EnemyArray);
+            //Find distance between
+            DistanceBetween(gameObject.transform.position, TargetToAttack.transform.position);
         }
+
+        /*
+        if(TargetToAttack.GetComponent<Soldier>().Health <= 0)
+        {
+            TargetToAttack = null;
+        }*/
     }
 
-    private GameObject GetClosestEnemy(GameObject[] enemies)
+    public GameObject GetClosestEnemy(GameObject[] enemies)
     {
         GameObject bestTarget = null;
         float closestDistanceSqr = Mathf.Infinity;
@@ -97,8 +117,21 @@ public class Soldier : MonoBehaviour
                 bestTarget = potentialTarget;
             }
         }
-        Debug.Log("The closest target is: " + bestTarget);
+        //Debug.Log("The closest target is: " + bestTarget);
         return bestTarget; // Return the best target
+    }
+
+    private float DistanceBetween(Vector3 pos1, Vector3 pos2)
+    {
+        // Calculate distance of the Vectors
+        float posX = Mathf.Sqrt((pos1.x * pos1.x) + (pos2.x * pos2.x));
+        float posY = Mathf.Sqrt((pos1.y * pos1.y) + (pos2.y * pos2.y));
+        float posZ = Mathf.Sqrt((pos1.z * pos1.z) + (pos2.z * pos2.z));
+        //Calculate the distance between X and Y.
+        float posXY = Mathf.Sqrt((posX * posX) + (posY * posY));
+
+        // Return the distance between the XY calculated position and the Z position for the final result.
+        return Mathf.Sqrt((posXY * posXY) + (posZ * posZ));
     }
 
     private void Die()
