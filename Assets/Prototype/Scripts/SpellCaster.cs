@@ -6,16 +6,6 @@ public class SpellCaster : MonoBehaviour, ISoldierAttack
 {
     // Variables
 	
-    void Start()
-    {
-        
-    }
-	
-    void Update()
-    {
-        
-    }
-
     public void Attack()
     {
         Debug.Log("Casting Spell!");

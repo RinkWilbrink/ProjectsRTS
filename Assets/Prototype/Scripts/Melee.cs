@@ -6,16 +6,6 @@ public class Melee : MonoBehaviour, ISoldierAttack
 {
     // Variables
 	
-    void Start()
-    {
-        
-    }
-	
-    void Update()
-    {
-        
-    }
-
     public void Attack()
     {
         Debug.Log("Melee Attack");

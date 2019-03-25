@@ -484,7 +484,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 686028066}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -5.46, y: 3.37, z: 0}
+  m_LocalPosition: {x: 3, y: 0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -506,6 +506,7 @@ MonoBehaviour:
   Health: 1
   damage: 1
   speedMultiplier: 1
+  maxAttackSpeed: 0
   autoMovement: 0
 --- !u!1 &2139581329
 GameObject:
@@ -543,6 +544,7 @@ MonoBehaviour:
   Health: 1
   damage: 1
   speedMultiplier: 1
+  maxAttackSpeed: 0
   autoMovement: 0
 --- !u!65 &2139581331
 BoxCollider:
@@ -610,7 +612,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2139581329}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.5, z: 0}
+  m_LocalPosition: {x: -3, y: 0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}

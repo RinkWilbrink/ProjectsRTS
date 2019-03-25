@@ -18,6 +18,7 @@ public class Soldier : MonoBehaviour
     [SerializeField] private int Health;
     [SerializeField] private int damage;
     [SerializeField] private int speedMultiplier;
+    [SerializeField] private float maxAttackSpeed;
 
     [Header("Debug attributes")]
     [SerializeField] private bool autoMovement;
@@ -27,6 +28,10 @@ public class Soldier : MonoBehaviour
     private string attackTag;
     private GameObject TargetToAttack;
     private float maxAttackDistance;
+    private float AttackTimer;
+    private bool isAttacking = false;
+
+    private GameObject[] EnemyArray; // Array of enemy's this Soldier can attack
 
     List<targetAttacking> l_attackTargets = new List<targetAttacking>();
 
@@ -78,28 +83,47 @@ public class Soldier : MonoBehaviour
         {
             l_attackTargets[(int)soldierType].Attack();
         }
-        
+
+        //Update the position of the object
+        if(isAttacking == false)
+        {
+            transform.position = new Vector3(position.x, position.y, position.z);
+        }
+
+        if (TargetToAttack == null)
+        {
+            try
+            {
+                EnemyArray = GameObject.FindGameObjectsWithTag(attackTag);
+                TargetToAttack = GetClosestEnemy(EnemyArray);
+            }
+            catch
+            {
+                Debug.Log(gameObject.name + " Couldnt find a target!");
+            }
+        }
+
+        if(Input.GetKeyDown(KeyCode.I))
+        {
+            Debug.Log(DistanceBetween(gameObject.transform.position, TargetToAttack.transform.position));
+        }
+
+        if(DistanceBetween(gameObject.transform.position, TargetToAttack.transform.position) <= maxAttackDistance)
+        {
+            // Allowed to attack
+
+        }
+
+        if (TargetToAttack.GetComponent<Soldier>().Health <= 0)
+        {
+            TargetToAttack = null;
+            //Debug.Log(gameObject.name + " says: OOOOOOOOOFFFFFF");
+        }
+
         if (Health <= 0)
         {
             Die();
         }
-
-        //Update the position of the object
-        transform.position = new Vector3(position.x, position.y, position.z);
-
-        if (Input.GetKeyDown(KeyCode.O))
-        {
-            GameObject[] EnemyArray = GameObject.FindGameObjectsWithTag(attackTag);
-            TargetToAttack = GetClosestEnemy(EnemyArray);
-            //Find distance between
-            DistanceBetween(gameObject.transform.position, TargetToAttack.transform.position);
-        }
-
-        /*
-        if(TargetToAttack.GetComponent<Soldier>().Health <= 0)
-        {
-            TargetToAttack = null;
-        }*/
     }
 
     public GameObject GetClosestEnemy(GameObject[] enemies)
@@ -121,17 +145,17 @@ public class Soldier : MonoBehaviour
         return bestTarget; // Return the best target
     }
 
+    /// <summary> Check the distance between 2 Vector3D's </summary>
+    /// <param name="pos1">The first Vector (Point A).</param> <param name="pos2">The second Vector (Point B).</param>
+    /// <returns>A float value with the distance between Two 3D positions</returns>
     private float DistanceBetween(Vector3 pos1, Vector3 pos2)
     {
         // Calculate distance of the Vectors
-        float posX = Mathf.Sqrt((pos1.x * pos1.x) + (pos2.x * pos2.x));
-        float posY = Mathf.Sqrt((pos1.y * pos1.y) + (pos2.y * pos2.y));
-        float posZ = Mathf.Sqrt((pos1.z * pos1.z) + (pos2.z * pos2.z));
-        //Calculate the distance between X and Y.
-        float posXY = Mathf.Sqrt((posX * posX) + (posY * posY));
-
+        float posX = pos1.x - pos2.x;
+        float posY = pos1.y - pos2.y;
+        float posZ = pos1.z - pos2.z;
         // Return the distance between the XY calculated position and the Z position for the final result.
-        return Mathf.Sqrt((posXY * posXY) + (posZ * posZ));
+        return Mathf.Sqrt((posX * posX) + (posY * posY) + (posZ * posZ));
     }
 
     private void Die()

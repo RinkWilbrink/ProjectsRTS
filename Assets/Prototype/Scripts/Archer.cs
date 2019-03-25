@@ -5,16 +5,6 @@ using UnityEngine;
 public class Archer : MonoBehaviour, ISoldierAttack
 {
     // Variables
-	
-    void Start()
-    {
-        
-    }
-	
-    void Update()
-    {
-        
-    }
 
     public void Attack()
     {

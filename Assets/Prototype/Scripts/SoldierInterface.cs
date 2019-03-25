@@ -18,7 +18,7 @@ class targetAttacking
 
     public void Attack()
     {
-        if(iSoldierAttack != null)
+        if(iSoldierAttack != null) // Check if iSoldierAttack is something to prefent null reference exceptions
         {
             iSoldierAttack.Attack();
         }
