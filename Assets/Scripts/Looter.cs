@@ -9,7 +9,7 @@ public class Looter : MonoBehaviour {
     [SerializeField] private Transform basePos;
     private GameController game;
     private EnemyBehaviour enemyBehaviour;
-    private Transform centerMine;
+    private GameObject[] goldMine;
     private bool isGathering = false;
     private bool flipper;
 
@@ -17,7 +17,7 @@ public class Looter : MonoBehaviour {
         game = FindObjectOfType<GameController>();
         enemyBehaviour = FindObjectOfType<EnemyBehaviour>();
         basePos = GameObject.Find("Base0" + factionIndex).GetComponent<Transform>();
-        centerMine = GameObject.Find("CenterMine").GetComponent<Transform>();
+        goldMine = GameObject.FindGameObjectsWithTag("GoldMines");
         gameObject.name = "LooterFaction" + factionIndex;
         if ( factionIndex == 2 ) {
             flipper = true;
@@ -30,6 +30,7 @@ public class Looter : MonoBehaviour {
 
     float timer = 0f;
     bool abool = false;
+    int testIndex;
     private void Update() {
         if ( healthPoints <= 0 )
             Dead();
@@ -46,34 +47,48 @@ public class Looter : MonoBehaviour {
             GetComponent<SpriteRenderer>().flipX = flipper;
         }
 
-        if ( Vector3.Distance(transform.position, centerMine.position) < centerMine.localScale.x && !isGathering ) {
-            // Start mining
-            isGathering = true;
-        } else if ( Vector3.Distance(transform.position, centerMine.position) > centerMine.localScale.x && !isGathering ) {
-            transform.Translate(Vector2.right * movementSpeed * Time.deltaTime);
-        }
-        print(game.playerPoints);
-        if ( isGathering && Vector3.Distance(transform.position, basePos.position) < basePos.localScale.x ) {
-            timer = 0f;
-            if ( factionIndex == 1 )
-                game.playerPoints += 10;
-            else if ( factionIndex == 2 )
-                game.enemyPoints += 10;
-            isGathering = false;
-            abool = false;
-            flipper = !flipper;
-            GetComponent<SpriteRenderer>().flipX = flipper;
+        for ( int i = 0; i < goldMine.Length; i++ ) {
+            if ( Vector3.Distance(transform.position, goldMine[i].transform.position) < goldMine[i].transform.localScale.x && !isGathering && !goldMine[i].GetComponent<GoldMine>().isOccupied ) {
+                // Start mining
+                if ( factionIndex == 1 )
+                    LooterController.playerLootersBusy++;
+                else if ( factionIndex == 2 )
+                    LooterController.enemyLootersBusy++;
+                isGathering = true;
+                goldMine[i].GetComponent<GoldMine>().isOccupied = true;
+                testIndex = i;
+            } else if ( Vector3.Distance(transform.position, goldMine[i].transform.position) > goldMine[i].transform.localScale.x && !isGathering ) {
+                transform.Translate(Vector2.right * movementSpeed * Time.deltaTime);
+            } else
+                transform.Translate(Vector3.zero);
+
+            //print(game.playerPoints);
+            if ( isGathering && Vector3.Distance(transform.position, basePos.position) < basePos.localScale.x ) {
+                timer = 0f;
+                if ( factionIndex == 1 ) {
+                    LooterController.playerLootersBusy--;
+                    game.playerPoints += 10;
+                } else if ( factionIndex == 2 ) {
+                    LooterController.enemyLootersBusy--;
+                    game.enemyPoints += 10;
+                }
+                isGathering = false;
+                goldMine[testIndex].GetComponent<GoldMine>().isOccupied = false;
+                abool = false;
+                flipper = !flipper;
+                GetComponent<SpriteRenderer>().flipX = flipper;
+            }
         }
     }
 
-    private void OnTriggerEnter2D( Collider2D collision ) {
+    private void OnTriggerEnter( Collider collision ) {
         if ( collision.gameObject.tag == "DamageSpell" && factionIndex == 2 )
             healthPoints -= Spells.damage;
         if ( collision.gameObject.tag == "HealingSpell" && factionIndex == 1 )
             healthPoints += Spells.healing;
     }
 
-    private void OnTriggerStay2D( Collider2D collision ) {
+    private void OnTriggerStay( Collider collision ) {
         if ( collision.gameObject.tag == "HealingSpell" && factionIndex == 1 )
             healthPoints += Spells.healing * Time.deltaTime;
     }

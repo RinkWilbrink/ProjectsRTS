@@ -4,9 +4,8 @@ using UnityEngine;
 
 public enum SpellType {
     lightning = 0,
-    healing,
-    rage
-
+    healing = 1,
+    rage = 2
 }
 
 public class Spells : MonoBehaviour {
