@@ -3,11 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Melee : MonoBehaviour, ISoldierAttack
-{
-    // Variables
-	
+{	
     public void Attack()
     {
-        Debug.Log("Melee Attack");
+        //Debug.Log("Melee Attack");
     }
 }

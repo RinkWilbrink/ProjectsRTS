@@ -8,6 +8,6 @@ public class Archer : MonoBehaviour, ISoldierAttack
 
     public void Attack()
     {
-        Debug.Log("I took an arrow to my knee!!!");
+        //Debug.Log("I took an arrow to my knee!!!");
     }
 }
