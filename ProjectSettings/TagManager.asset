@@ -8,6 +8,8 @@ TagManager:
   - DamageSpell
   - HealingSpell
   - GoldMines
+  - Mage
+  - Swordsmen
   layers:
   - Default
   - TransparentFX
