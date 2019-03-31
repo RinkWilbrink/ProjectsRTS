@@ -22,8 +22,11 @@ public class Looter : MonoBehaviour {
         if ( factionIndex == 2 ) {
             flipper = true;
             GetComponent<SpriteRenderer>().flipX = true;
+            GetComponent<SpriteRenderer>().color = Color.red;
             movementSpeed *= -1;
             enemyBehaviour.looterUnits++;
+        } else {
+            GetComponent<SpriteRenderer>().color = Color.green;
         }
         maxHP = healthPoints;
     }
