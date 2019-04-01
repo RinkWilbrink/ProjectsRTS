@@ -18,8 +18,6 @@ public class Soldier : MonoBehaviour
     [SerializeField] private int Health;
     [SerializeField] private int damage;
     [SerializeField] private int speedMultiplier;
-    [SerializeField] private float maxAttackSpeed;
-    [SerializeField] private float maxAttackDistance;
 
     [Header("Move on its own")]
     [SerializeField] private bool allowedToMove;
@@ -27,8 +25,21 @@ public class Soldier : MonoBehaviour
     [Header("Animations for the weapon")]
     [SerializeField] private GameObject fakeWeapon;
     [SerializeField] private GameObject RealWeapon;
+
+    [Header("Attack Stats")]
+
+    [Tooltip("The time in seconds it takes between attacks")]
+    [SerializeField] private float maxAttackSpeed;
+
+    [Tooltip("The max distance in meters the Soldier can detect an enemy and attack it")]
+    [SerializeField] private float maxAttackDistance;
+
+    [Tooltip("The time it takes for the animation to hit the target")]
     [SerializeField] private float AttackHitTime;
+
+    [Tooltip("The time it takes for the attack animation to finish")]
     [SerializeField] private float AttckAnimationEndTime;
+
     private float currentTimer = 0;
 
     // Private Variables
@@ -38,6 +49,7 @@ public class Soldier : MonoBehaviour
     private float AttackTimer;
     private bool isAttacking = false;
     private bool hasHitTarget = false;
+    private float currentAttackTimer;
 
     private GameObject[] EnemyArray; // Array of enemy's this Soldier can attack
 
@@ -49,6 +61,8 @@ public class Soldier : MonoBehaviour
         position.x = transform.position.x;
         position.y = transform.position.y;
         position.z = transform.position.z;
+
+        currentAttackTimer = 0;
 
         //Settings for individual sides
         switch (gameObject.tag)
@@ -73,7 +87,7 @@ public class Soldier : MonoBehaviour
     {
         if (allowedToMove) // Let the soldiers move on their own
         {
-            position.x += speedMultiplier * Time.deltaTime;
+            transform.position = new Vector3(position.x, position.y, position.z);
         }
 
         if(Input.GetKeyDown(KeyCode.I))
@@ -81,8 +95,13 @@ public class Soldier : MonoBehaviour
             isAttacking = true;
         }
 
+        if(isAttacking)
+        {
+            currentAttackTimer -= Time.deltaTime;
+        }
+
         //Update the position of the object
-        if(isAttacking == true)
+        if(isAttacking == true && currentAttackTimer <= 0)
         {
             if (currentTimer < AttckAnimationEndTime)
             {
@@ -98,16 +117,15 @@ public class Soldier : MonoBehaviour
             }
             else
             {
-                currentTimer = 0;
-                hasHitTarget = false;
-                isAttacking = false;
+                currentTimer = 0;   currentAttackTimer = maxAttackSpeed;
+                hasHitTarget = false;   isAttacking = false;
                 fakeWeapon.SetActive(true);
             }
             currentTimer += Time.deltaTime;
         }
         else
         {
-            transform.position = new Vector3(position.x, position.y, position.z);
+            position.x += speedMultiplier * Time.deltaTime;
         }
 
         if (TargetToAttack == null)
@@ -145,21 +163,6 @@ public class Soldier : MonoBehaviour
         if (Health <= 0)
         {
             Die();
-        }
-    }
-
-    public void Attacking()
-    {
-        switch (soldierType)
-        {
-            case SoldierType.looter:
-                break;
-            case SoldierType.Melee:
-                break;
-            case SoldierType.Ranged:
-                break;
-            case SoldierType.Mage:
-                break;
         }
     }
 
