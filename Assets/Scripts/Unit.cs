@@ -23,30 +23,46 @@ public class Unit : MonoBehaviour {
         game = FindObjectOfType<GameController>();
         sprite = GetComponent<UnityEngine.UI.Image>();
         standardColor = sprite.color;
+        StartCoroutine("CountDown", coolDown);
     }
 
     private float timer;
+    private float animationTime;
     void Update() {
         if ( game.playerPoints < requiredAmount )
             sprite.color = notEnoughCredits;
         else if ( game.playerPoints >= requiredAmount )
             sprite.color = standardColor;
-        if ( boughtUnit )
-            timer += Time.deltaTime;
-        if ( sprite.fillAmount <= 1 )
-            sprite.fillAmount += ( ( coolDown / 100 ) * Time.deltaTime );
+        //if ( boughtUnit )
+        //    timer += Time.deltaTime;
+        //if ( sprite.fillAmount <= 1 )
+        //    sprite.fillAmount += coolDown * Time.deltaTime;
+    }
+
+    IEnumerator CountDown( float time ) {
+        StartCoroutine("CountDownAnimation", time);
+        yield return new WaitForSeconds(time);
+    }
+    IEnumerator CountDownAnimation( float time ) {
+        animationTime = 0f;
+        while ( animationTime <= coolDown ) {
+            animationTime += Time.deltaTime;
+            sprite.fillAmount = animationTime / time;
+            yield return null;
+        }
     }
 
     public void PurchaseUnit() {
-        if ( game.playerPoints >= requiredAmount && timer >= coolDown ) {
+        if ( game.playerPoints >= requiredAmount && animationTime >= coolDown ) {
             //int i = System.Convert.ToInt16(EventSystem.current.currentSelectedGameObject.name);
             sprite.fillAmount = 0;
             //print("Button name: " + i);
             game.playerPoints -= requiredAmount;
             boughtUnit = true;
-            timer = 0f;
+            animationTime = 0f;
             Instantiate(objectToSpawn, game.factionSpawnPos[0].position, game.factionSpawnPos[0].rotation);
             Debug.Log("Bought unit");
+            StartCoroutine("CountDown", coolDown);
         }
     }
 }

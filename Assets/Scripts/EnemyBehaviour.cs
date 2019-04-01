@@ -6,10 +6,10 @@ public class EnemyBehaviour : MonoBehaviour {
     [SerializeField] private GameObject[] enemiesToSpawn;
     [SerializeField, Range(0, 5)] private float spawnCooldown = 2f;
     private GameController game;
+    private bool unitSpawned = false;
+    private float spawnTimer;
     public int looterUnits;
-    private int unitsSpawned;
-    bool unitSpawned = false;
-    float spawnTimer;
+    public int unitsSpawned;
 
     private void Start() {
         game = FindObjectOfType<GameController>();
@@ -17,7 +17,7 @@ public class EnemyBehaviour : MonoBehaviour {
     }
     float testTimer;
     private void Update() {
-        if ( game.enemyPoints >= 10 && looterUnits < 2 && !unitSpawned )
+        if ( game.enemyPoints >= 10 && looterUnits <= 1 && !unitSpawned )
             InstantiateUnit(enemiesToSpawn[0], 10);
         testTimer += Time.deltaTime;
         if ( unitsSpawned <= 100 && testTimer > 4f && game.enemyPoints >= 20 ) {

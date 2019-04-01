@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Looter : MonoBehaviour {
-    [SerializeField, Range(1, 2)] private int factionIndex = 1;
     [SerializeField, Range(1, 5)] private float movementSpeed = 2;
-    [SerializeField, Range(1, 20)] private float healthPoints = 5;
     [SerializeField] private Transform basePos;
+    [Range(1, 2)] public int factionIndex = 1;
     private GameController game;
     private EnemyBehaviour enemyBehaviour;
     private GameObject[] goldMine;
@@ -28,23 +27,20 @@ public class Looter : MonoBehaviour {
         } else {
             GetComponent<SpriteRenderer>().color = Color.green;
         }
-        maxHP = healthPoints;
     }
 
     float timer = 0f;
     bool abool = false;
     int testIndex;
     private void Update() {
-        if ( healthPoints <= 0 )
-            Dead();
+
         if ( isGathering )
             timer += Time.deltaTime;
         if ( timer > 3f && !abool ) {
             flipper = !flipper;
             abool = true;
         }
-        if ( Input.GetKeyDown(KeyCode.D) )
-            healthPoints -= 1;
+
         if ( timer > 3f ) {
             transform.Translate(Vector2.left * movementSpeed * Time.deltaTime);
             GetComponent<SpriteRenderer>().flipX = flipper;
@@ -82,31 +78,5 @@ public class Looter : MonoBehaviour {
                 GetComponent<SpriteRenderer>().flipX = flipper;
             }
         }
-    }
-
-    private void OnTriggerEnter( Collider collision ) {
-        if ( collision.gameObject.tag == "DamageSpell" && factionIndex == 2 )
-            healthPoints -= Spells.damage;
-        if ( collision.gameObject.tag == "HealingSpell" && factionIndex == 1 )
-            healthPoints += Spells.healing;
-    }
-
-    private void OnTriggerStay( Collider collision ) {
-        if ( collision.gameObject.tag == "HealingSpell" && factionIndex == 1 )
-            healthPoints += Spells.healing * Time.deltaTime;
-    }
-
-    float maxHP;
-    private void OnGUI() {
-        if ( factionIndex == 1 ) {
-            Vector3 targetPos;
-            targetPos = Camera.main.WorldToScreenPoint(transform.position);
-            GUI.Box(new Rect(targetPos.x, ( Screen.height - targetPos.y ) - 35, 80, 20), "HP: " + healthPoints + " / " + maxHP);
-        }
-    }
-
-    private void Dead() {
-        enemyBehaviour.looterUnits--;
-        Destroy(gameObject);
     }
 }

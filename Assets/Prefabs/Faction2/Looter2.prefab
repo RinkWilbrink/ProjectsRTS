@@ -13,9 +13,12 @@ GameObject:
   - component: {fileID: 8906171939021922805}
   - component: {fileID: 2123852324}
   - component: {fileID: 2123852323}
+  - component: {fileID: 8353205251665294036}
+  - component: {fileID: 2531394198999420689}
+  - component: {fileID: 4548371767827018452}
   m_Layer: 10
   m_Name: Looter2
-  m_TagString: Untagged
+  m_TagString: Mage
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -94,10 +97,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 469d1698b852834418e0de5ff941f04f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  factionIndex: 2
   movementSpeed: 2
-  healthPoints: 5
   basePos: {fileID: 0}
+  factionIndex: 2
 --- !u!65 &2123852324
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -127,3 +129,51 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!114 &8353205251665294036
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8906171939021922801}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 018e522fd5d7a74428e92a7710ce42ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  soldierType: 0
+  Health: 5
+  damage: 0
+  speedMultiplier: 0
+  allowedToMove: 0
+  fakeWeapon: {fileID: 0}
+  RealWeapon: {fileID: 0}
+  maxAttackSpeed: 0
+  maxAttackDistance: 0
+  AttackHitTime: 0
+  AttckAnimationEndTime: 0
+--- !u!114 &2531394198999420689
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8906171939021922801}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe6a1a9d766391e488bbf0512182b593, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4548371767827018452
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8906171939021922801}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fcbfeb49ac407a2489f826e73c180477, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthPoints: 5
