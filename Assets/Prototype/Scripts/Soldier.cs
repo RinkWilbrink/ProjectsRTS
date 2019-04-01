@@ -4,7 +4,7 @@ using UnityEngine;
 
 public enum SoldierType
 {
-    looter = 0, Melee = 1,
+    Looter = 0, Melee = 1,
     Ranged = 2, Mage = 3
 }
 
@@ -15,7 +15,7 @@ public class Soldier : MonoBehaviour
     [SerializeField] public SoldierType soldierType;
 
     [Header("Soldier Stats")]
-    [SerializeField] private int Health;
+    [SerializeField] public int Health;
     [SerializeField] private int damage;
     [SerializeField] private int speedMultiplier;
 
@@ -77,6 +77,17 @@ public class Soldier : MonoBehaviour
         }
 
         //Add all the classes that need have the attack function
+        switch (soldierType)
+        {
+            case SoldierType.Looter:
+                break;
+            case SoldierType.Melee:
+                break;
+            case SoldierType.Ranged:
+                break;
+            case SoldierType.Mage:
+                break;
+        }
         l_attackTargets.Add( new targetAttacking( null ) ); // Looter
         l_attackTargets.Add( new targetAttacking( new Melee() ) ); // Melee soldier
         l_attackTargets.Add( new targetAttacking( new Archer() ) ); // Archer soldier
