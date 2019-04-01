@@ -12,6 +12,6 @@ public class GoldMine : MonoBehaviour {
         //else
         //    isOccupied = false;
 
-        print(gameObject.name + " ? " + isOccupied);
+        //print(gameObject.name + " ? " + isOccupied);
     }
 }

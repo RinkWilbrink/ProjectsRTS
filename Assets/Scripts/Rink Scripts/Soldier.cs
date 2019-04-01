@@ -19,17 +19,25 @@ public class Soldier : MonoBehaviour
     [SerializeField] private int damage;
     [SerializeField] private int speedMultiplier;
     [SerializeField] private float maxAttackSpeed;
+    [SerializeField] private float maxAttackDistance;
 
-    [Header("Debug attributes")]
-    [SerializeField] private bool autoMovement;
+    [Header("Move on its own")]
+    [SerializeField] private bool allowedToMove;
+
+    [Header("Animations for the weapon")]
+    [SerializeField] private GameObject fakeWeapon;
+    [SerializeField] private GameObject RealWeapon;
+    [SerializeField] private float AttackHitTime;
+    [SerializeField] private float AttckAnimationEndTime;
+    private float currentTimer = 0;
 
     // Private Variables
     private Vector3 position;
     private string attackTag;
     private GameObject TargetToAttack;
-    private float maxAttackDistance;
     private float AttackTimer;
     private bool isAttacking = false;
+    private bool hasHitTarget = false;
 
     private GameObject[] EnemyArray; // Array of enemy's this Soldier can attack
 
@@ -63,29 +71,41 @@ public class Soldier : MonoBehaviour
 
     void Update()
     {
-        #region Movement
-        if (Input.GetKey(KeyCode.A) && !autoMovement)
-        {
-            position.x -= speedMultiplier * Time.deltaTime;
-        }
-        if (Input.GetKey(KeyCode.D) && !autoMovement)
+        if (allowedToMove) // Let the soldiers move on their own
         {
             position.x += speedMultiplier * Time.deltaTime;
         }
-        if (autoMovement) // Let the soldiers move on their own
-        {
-            position.x += speedMultiplier * Time.deltaTime;
-        }
-        #endregion
 
-        //Attack target
-        if (Input.GetKeyDown(KeyCode.P))
+        if(Input.GetKeyDown(KeyCode.I))
         {
-            l_attackTargets[(int)soldierType].Attack();
+            isAttacking = true;
         }
-
+        
         //Update the position of the object
-        if(isAttacking == false)
+        if(isAttacking == true)
+        {
+            if (currentTimer < AttckAnimationEndTime)
+            {
+                l_attackTargets[(int)soldierType].Attack(); //full Atack Time Melee = 0.583 seconden hit time is 0.2 sec
+
+                fakeWeapon.SetActive(false); RealWeapon.SetActive(true);
+
+                if (currentTimer >= AttackHitTime && hasHitTarget == false)
+                {
+                    TargetToAttack.GetComponent<Soldier>().Health -= damage;
+                    hasHitTarget = true;
+                }
+            }
+            else
+            {
+                currentTimer = 0;
+                hasHitTarget = false;
+                isAttacking = false;
+                fakeWeapon.SetActive(true);
+            }
+            currentTimer += Time.deltaTime;
+        }
+        else
         {
             transform.position = new Vector3(position.x, position.y, position.z);
         }
@@ -103,26 +123,43 @@ public class Soldier : MonoBehaviour
             }
         }
 
-        if(Input.GetKeyDown(KeyCode.I))
+        try
         {
-            Debug.Log(DistanceBetween(gameObject.transform.position, TargetToAttack.transform.position));
-        }
+            if (DistanceBetween(gameObject.transform.position, TargetToAttack.transform.position) <= maxAttackDistance)
+            {
+                // Allowed to attack
+                isAttacking = true;
+            }
+        } catch { Debug.Log("No new Target located yet"); }
 
-        if(DistanceBetween(gameObject.transform.position, TargetToAttack.transform.position) <= maxAttackDistance)
+        try
         {
-            // Allowed to attack
-
-        }
-
-        if (TargetToAttack.GetComponent<Soldier>().Health <= 0)
-        {
-            TargetToAttack = null;
-            //Debug.Log(gameObject.name + " says: OOOOOOOOOFFFFFF");
-        }
+            if (TargetToAttack.GetComponent<Soldier>().Health <= 0)
+            {
+                TargetToAttack = null;
+                //isAttacking = false;
+            }
+        } catch { Debug.Log("There are no targets to attack now! Dammit"); }
+        
 
         if (Health <= 0)
         {
             Die();
+        }
+    }
+
+    public void Attacking()
+    {
+        switch (soldierType)
+        {
+            case SoldierType.looter:
+                break;
+            case SoldierType.Melee:
+                break;
+            case SoldierType.Ranged:
+                break;
+            case SoldierType.Mage:
+                break;
         }
     }
 
@@ -161,5 +198,6 @@ public class Soldier : MonoBehaviour
     private void Die()
     {
         Debug.Log(gameObject.name + " has Died");
+        Destroy(gameObject);
     }
 }

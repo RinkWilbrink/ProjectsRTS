@@ -8,6 +8,6 @@ public class SpellCaster : MonoBehaviour, ISoldierAttack
 	
     public void Attack()
     {
-        Debug.Log("Casting Spell!");
+        //Debug.Log("Casting Spell!");
     }
 }

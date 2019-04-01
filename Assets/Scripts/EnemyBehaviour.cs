@@ -38,8 +38,8 @@ public class EnemyBehaviour : MonoBehaviour {
 
     private void InstantiateUnit( GameObject go, int cost ) {
         Instantiate(go, transform.position, transform.rotation);
-        //Debug.Log(go + "spawned");
+        Debug.Log(go.name + " spawned");
         unitSpawned = true;
-        //game.enemyPoints -= cost;
+        game.enemyPoints -= cost;
     }
 }
