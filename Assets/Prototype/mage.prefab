@@ -300,10 +300,10 @@ MonoBehaviour:
   Health: 1
   damage: 1
   speedMultiplier: 1
-  maxAttackSpeed: 0
-  maxAttackDistance: 10
   allowedToMove: 1
   fakeWeapon: {fileID: 7259682688885938759}
   RealWeapon: {fileID: 7259682689340930217}
+  maxAttackSpeed: 3
+  maxAttackDistance: 10
   AttackHitTime: 0.33
   AttckAnimationEndTime: 0.367

@@ -19,40 +19,34 @@ public class Soldier : MonoBehaviour
     [SerializeField] private int damage;
     [SerializeField] private int speedMultiplier;
 
-    [Header("Move on its own")]
-    [SerializeField] private bool allowedToMove;
-
-    [Header("Animations for the weapon")]
-    [SerializeField] private GameObject fakeWeapon;
-    [SerializeField] private GameObject RealWeapon;
+    // Animation for the Soldiers weapon
+    [SerializeField] private GameObject fakeWeapon, RealWeapon;
 
     [Header("Attack Stats")]
-
-    [Tooltip("The time in seconds it takes between attacks")]
     [SerializeField] private float maxAttackSpeed;
-
-    [Tooltip("The max distance in meters the Soldier can detect an enemy and attack it")]
     [SerializeField] private float maxAttackDistance;
-
-    [Tooltip("The time it takes for the animation to hit the target")]
     [SerializeField] private float AttackHitTime;
-
-    [Tooltip("The time it takes for the attack animation to finish")]
     [SerializeField] private float AttckAnimationEndTime;
 
-    private float currentTimer = 0;
-
-    // Private Variables
-    private Vector3 position;
-    private string attackTag;
-    private GameObject TargetToAttack;
-    private float AttackTimer;
+    // Booleans
+    private bool allowedToMove;
     private bool isAttacking = false;
     private bool hasHitTarget = false;
+
+    // Timers
+    private float currentTimer = 0;
+    private float AttackTimer;
     private float currentAttackTimer;
 
-    private GameObject[] EnemyArray; // Array of enemy's this Soldier can attack
+    private Vector3 position;
+    private string attackTag;
 
+    // All variables that decide who to attack
+    private GameObject TargetToAttack;
+    [HideInInspector] public bool isTargeted = false;
+    private GameObject[] EnemyArray;
+
+    //Soldier attacks
     List<targetAttacking> l_attackTargets = new List<targetAttacking>();
 
     void Start()
@@ -96,11 +90,6 @@ public class Soldier : MonoBehaviour
 
     void Update()
     {
-        if (allowedToMove) // Let the soldiers move on their own
-        {
-            transform.position = new Vector3(position.x, position.y, position.z);
-        }
-
         if(Input.GetKeyDown(KeyCode.I))
         {
             isAttacking = true;
@@ -116,6 +105,8 @@ public class Soldier : MonoBehaviour
         {
             if (currentTimer < AttckAnimationEndTime)
             {
+                allowedToMove = false;
+
                 l_attackTargets[(int)soldierType].Attack(); //full Atack Time Melee = 0.583 seconden hit time is 0.2 sec
 
                 fakeWeapon.SetActive(false); RealWeapon.SetActive(true);
@@ -136,7 +127,10 @@ public class Soldier : MonoBehaviour
         }
         else
         {
-            position.x += speedMultiplier * Time.deltaTime;
+            if(allowedToMove)
+            {
+                position.x += speedMultiplier * Time.deltaTime;
+            }
         }
 
         if (TargetToAttack == null)
@@ -145,11 +139,11 @@ public class Soldier : MonoBehaviour
             {
                 EnemyArray = GameObject.FindGameObjectsWithTag(attackTag);
                 TargetToAttack = GetClosestEnemy(EnemyArray);
-            }
-            catch
-            {
-                Debug.Log(gameObject.name + " Couldnt find a target!");
-            }
+                if (TargetToAttack.GetComponent<Soldier>().isTargeted == true)
+                {
+                    TargetToAttack = null;
+                }
+            } catch { Debug.Log(gameObject.name + " Couldnt find a target!"); }
         }
 
         try
@@ -165,15 +159,17 @@ public class Soldier : MonoBehaviour
         {
             if (TargetToAttack.GetComponent<Soldier>().Health <= 0)
             {
+                allowedToMove = true;
                 TargetToAttack = null;
-                //isAttacking = false;
             }
         } catch { Debug.Log("There are no targets to attack now! Dammit"); }
-        
+
+        transform.position = new Vector3(position.x, transform.position.y);
 
         if (Health <= 0)
         {
-            Die();
+            Debug.Log(gameObject.name + " has Died");
+            Destroy(gameObject);
         }
     }
 
@@ -192,7 +188,6 @@ public class Soldier : MonoBehaviour
                 bestTarget = potentialTarget;
             }
         }
-        //Debug.Log("The closest target is: " + bestTarget);
         return bestTarget; // Return the best target
     }
 
@@ -207,11 +202,5 @@ public class Soldier : MonoBehaviour
         float posZ = pos1.z - pos2.z;
         // Return the distance between the XY calculated position and the Z position for the final result.
         return Mathf.Sqrt((posX * posX) + (posY * posY) + (posZ * posZ));
-    }
-
-    private void Die()
-    {
-        Debug.Log(gameObject.name + " has Died");
-        Destroy(gameObject);
     }
 }

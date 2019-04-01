@@ -434,11 +434,11 @@ MonoBehaviour:
   Health: 1
   damage: 1
   speedMultiplier: 1
-  maxAttackSpeed: 0
-  maxAttackDistance: 1.5
   allowedToMove: 0
   fakeWeapon: {fileID: 1119197774}
   RealWeapon: {fileID: 1083841665}
+  maxAttackSpeed: 0
+  maxAttackDistance: 1.5
   AttackHitTime: 0.2
   AttckAnimationEndTime: 0.583
 --- !u!65 &609771772
@@ -895,6 +895,16 @@ PrefabInstance:
         type: 3}
       propertyPath: Health
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7259682689609770994, guid: 7cbee94fe13773644a42f4783fde732f,
+        type: 3}
+      propertyPath: maxAttackSpeed
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7259682689609770994, guid: 7cbee94fe13773644a42f4783fde732f,
+        type: 3}
+      propertyPath: allowedToMove
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7cbee94fe13773644a42f4783fde732f, type: 3}
