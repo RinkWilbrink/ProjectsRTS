@@ -21,6 +21,7 @@ public class Spell : MonoBehaviour {
         game = FindObjectOfType<GameController>();
         sprite = GetComponent<UnityEngine.UI.Image>();
         standardColor = sprite.color;
+        StartCoroutine("CountDown", coolDown);
     }
 
     private float timer;
@@ -29,10 +30,6 @@ public class Spell : MonoBehaviour {
             sprite.color = notEnoughCredits;
         else if ( game.playerPoints >= requiredAmount )
             sprite.color = standardColor;
-        if ( !canCastSpell )
-            timer += Time.deltaTime;
-        if ( sprite.fillAmount <= 1 )
-            sprite.fillAmount += ( ( coolDown / 100 ) * Time.deltaTime );
         if ( canCastSpell ) {
             // drag
         }
@@ -47,16 +44,32 @@ public class Spell : MonoBehaviour {
         }
     }
 
+    private IEnumerator CountDown( float time ) {
+        StartCoroutine("CountDownAnimation", time);
+        yield return new WaitForSeconds(time);
+    }
+    float animationTime;
+    private IEnumerator CountDownAnimation( float time ) {
+        animationTime = 0f;
+        while ( animationTime <= coolDown ) {
+            animationTime += Time.deltaTime;
+            sprite.fillAmount = animationTime / time;
+            yield return null;
+        }
+    }
+
     public void PurchaseSpell() {
-        if ( game.playerPoints >= requiredAmount && timer >= coolDown && !canCastSpell ) {
+        if ( game.playerPoints >= requiredAmount && animationTime >= coolDown && !canCastSpell ) {
             //int i = System.Convert.ToInt16(EventSystem.current.currentSelectedGameObject.name);
             sprite.fillAmount = 0;
             //print("Button name: " + i);
             game.playerPoints -= requiredAmount;
             timer = 0f;
+            animationTime = 0f;
             canCastSpell = true;
             //Instantiate(objectToSpawn, spawnPos.position, spawnPos.rotation);
             Debug.Log("Bought Spell");
+            StartCoroutine("CountDown", coolDown);
         }
     }
 }

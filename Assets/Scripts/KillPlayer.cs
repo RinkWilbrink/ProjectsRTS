@@ -3,37 +3,33 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class KillPlayer : MonoBehaviour {
-    [SerializeField, Range(1, 10)] private float healthPoints = 5;
-    private float factionIndex;
     private EnemyBehaviour enemyBehaviour;
 
     private void Start() {
-        factionIndex = GetComponent<Looter>().factionIndex;
-        healthPoints = GetComponent<Soldier>().Health;
         enemyBehaviour = FindObjectOfType<EnemyBehaviour>();
     }
 
     private void Update() {
-        if ( healthPoints <= 0 )
+        if ( gameObject.GetComponent<Soldier>().Health <= 0 )
             Dead();
         if ( Input.GetKeyDown(KeyCode.D) )
-            healthPoints -= 1;
+            gameObject.GetComponent<Soldier>().Health -= 1;
     }
 
     private void OnTriggerEnter( Collider collision ) {
-        if ( collision.gameObject.tag == "DamageSpell" && factionIndex == 2 )
-            healthPoints -= Spells.damage;
-        if ( collision.gameObject.tag == "HealingSpell" && factionIndex == 1 )
-            healthPoints += Spells.healing;
+        if ( collision.gameObject.tag == "DamageSpell" && gameObject.GetComponent<Looter>().factionIndex == 2 || tag == "Mage" )
+            gameObject.GetComponent<Soldier>().Health -= Spells.damage;
+        if ( collision.gameObject.tag == "HealingSpell" && gameObject.GetComponent<Looter>().factionIndex == 1 || tag == "Swordsmen" )
+            gameObject.GetComponent<Soldier>().Health += Spells.healing;
     }
 
     private void OnTriggerStay( Collider collision ) {
-        if ( collision.gameObject.tag == "HealingSpell" && factionIndex == 1 )
-            healthPoints += Spells.healing * Time.deltaTime;
+        if ( collision.gameObject.tag == "HealingSpell" && gameObject.GetComponent<Looter>().factionIndex == 1 || tag == "Swordsmen" )
+            gameObject.GetComponent<Soldier>().Health += Spells.healing * Time.deltaTime;
     }
 
     private void Dead() {
-        if ( factionIndex == 2 ) {
+        if ( gameObject.GetComponent<Looter>().factionIndex == 2 ) {
             enemyBehaviour.looterUnits--;
             enemyBehaviour.unitsSpawned--;
         }
