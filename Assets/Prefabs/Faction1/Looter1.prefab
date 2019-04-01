@@ -145,13 +145,13 @@ MonoBehaviour:
   Health: 5
   damage: 0
   speedMultiplier: 0
-  allowedToMove: 0
   fakeWeapon: {fileID: 0}
   RealWeapon: {fileID: 0}
   maxAttackSpeed: 0
   maxAttackDistance: 0
   AttackHitTime: 0
   AttckAnimationEndTime: 0
+  isTargeted: 0
 --- !u!114 &4335901885081064689
 MonoBehaviour:
   m_ObjectHideFlags: 0
