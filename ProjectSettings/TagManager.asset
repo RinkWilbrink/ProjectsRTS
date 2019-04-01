@@ -10,6 +10,7 @@ TagManager:
   - GoldMines
   - Mage
   - Swordsmen
+  - KillPlayer
   layers:
   - Default
   - TransparentFX
