@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Base : MonoBehaviour {
 
-    [SerializeField] int baseHealth = 100;
+    [SerializeField] float baseHealth = 100;
 
     private void Start() {
         baseHealth = GetComponent<Soldier>().Health;

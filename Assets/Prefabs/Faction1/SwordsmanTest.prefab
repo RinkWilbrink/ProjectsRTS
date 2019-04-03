@@ -180,17 +180,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 2421223134409983368}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1cde1d65c6008d644aefc847d930de63, type: 3}
+  m_Script: {fileID: 11500000, guid: 018e522fd5d7a74428e92a7710ce42ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   soldierType: 1
-  Health: 5
-  damage: 1
-  speedMultiplier: 1
-  maxAttackSpeed: 1
-  maxAttackDistance: 3
-  allowedToMove: 1
-  fakeWeapon: {fileID: 2421223133258757893}
-  RealWeapon: {fileID: 2421223133108926434}
-  AttackHitTime: 1
-  AttckAnimationEndTime: 4
+  Health: 6
+  damage: 2
+  speedMultiplier: 2
+  fakeWeapon: {fileID: 0}
+  RealWeapon: {fileID: 0}
+  maxAttackSpeed: 0
+  maxAttackDistance: 0
+  AttackHitTime: 0
+  AttckAnimationEndTime: 0

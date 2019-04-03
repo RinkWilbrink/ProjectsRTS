@@ -15,12 +15,14 @@ public class Soldier : MonoBehaviour
     [SerializeField] public SoldierType soldierType;
 
     [Header("Soldier Stats")]
-    [SerializeField] public int Health;
+    [SerializeField] public float Health;
     [SerializeField] private int damage;
     [SerializeField] private int speedMultiplier;
 
     // Animation for the Soldiers weapon
-    [SerializeField] private GameObject fakeWeapon, RealWeapon;
+    [Header("Weapon animation objects")]
+    [SerializeField] private GameObject fakeWeapon;
+    [SerializeField] private GameObject RealWeapon;
 
     [Header("Attack Stats")]
     [SerializeField] private float maxAttackSpeed;
@@ -34,15 +36,14 @@ public class Soldier : MonoBehaviour
     private bool hasHitTarget = false;
 
     // Timers
-    private float currentTimer = 0;
-    private float currentAttackTimer;
+    private float TargetDamageTimer = 0;
+    private float TimerBetweenAttacks = 0;
 
     private float position;
     private string attackTag;
 
     // All variables that decide who to attack
     private GameObject TargetToAttack;
-    [HideInInspector] public bool isTargeted = false;
     private GameObject[] EnemyArray;
 
     //Soldier attacks
@@ -64,45 +65,41 @@ public class Soldier : MonoBehaviour
                 attackTag = "Swordsmen";
                 break;
         }
-
-        #region Add all the classes that need have the attack function        
+        
         l_attackTargets.Add( new targetAttacking( null ) ); // Looter
         l_attackTargets.Add( new targetAttacking( new Melee() ) ); // Melee soldier
         l_attackTargets.Add( new targetAttacking( new Archer() ) ); // Archer soldier
         l_attackTargets.Add( new targetAttacking( new SpellCaster() ) ); // Spell Caster
-        #endregion
     }
 
     void Update()
     {
-        if(isAttacking)
+        if (isAttacking)
         {
-            currentAttackTimer -= Time.deltaTime;
-            //Update the position of the object
-            if (currentAttackTimer <= 0)
+            TimerBetweenAttacks -= Time.deltaTime;
+            if (TimerBetweenAttacks <= 0)
             {
-                if (currentTimer < AttckAnimationEndTime)
+                allowedToMove = false;
+
+                fakeWeapon.SetActive(false); RealWeapon.SetActive(true);
+
+                TargetDamageTimer += Time.deltaTime;
+
+                if (TargetDamageTimer >= AttackHitTime && hasHitTarget == false)
                 {
-                    allowedToMove = false;
-
-                    //l_attackTargets[(int)soldierType].Attack(); //full Atack Time Melee = 0.583 seconden hit time is 0.2 sec
-
-                    fakeWeapon.SetActive(false); RealWeapon.SetActive(true);
-
-                    if (currentTimer >= AttackHitTime) //  && hasHitTarget == false
-                    {
-                        TargetToAttack.GetComponent<Soldier>().Health -= damage;
-                        currentTimer = 100;
-                        //hasHitTarget = true;
-                    }
+                    TargetToAttack.GetComponent<Soldier>().Health -= damage;
+                    hasHitTarget = true;
                 }
-                else
+                if(TargetDamageTimer >= AttckAnimationEndTime)
                 {
-                    currentTimer = 0; currentAttackTimer = maxAttackSpeed;
-                    hasHitTarget = false; isAttacking = false;
-                    fakeWeapon.SetActive(true);
+                    TargetDamageTimer = 0;
+                    hasHitTarget = false;
+                    TimerBetweenAttacks = maxAttackSpeed;
                 }
-                currentTimer += Time.deltaTime;
+            }
+            else
+            {
+                fakeWeapon.SetActive(true);
             }
         }
         else
@@ -126,21 +123,25 @@ public class Soldier : MonoBehaviour
         {
             if (DistanceBetween(gameObject.transform.position, TargetToAttack.transform.position) <= maxAttackDistance)
             {
-                // Allowed to attack
                 isAttacking = true;
             }
-        } catch { Debug.Log("No new Target located yet"); }
+        } catch { Debug.Log("There is no target to compare its distance to"); }
 
         try
         {
             if (TargetToAttack.GetComponent<Soldier>().Health <= 0)
             {
+                TimerBetweenAttacks = 0;
+                isAttacking = false;
                 allowedToMove = true;
                 TargetToAttack = null;
             }
         } catch { Debug.Log("There are no targets to attack now! Dammit"); }
 
-        transform.position = new Vector3(position, transform.position.y, transform.position.z);
+        if(soldierType != SoldierType.Looter)
+        {
+            transform.position = new Vector3(position, transform.position.y, transform.position.z);
+        }
 
         if (Health <= 0)
         {
@@ -164,11 +165,6 @@ public class Soldier : MonoBehaviour
                 bestTarget = potentialTarget;
             }
         }
-        if (bestTarget.GetComponent<Soldier>().isTargeted == true)
-        {
-            return null;
-        }
-        bestTarget.GetComponent<Soldier>().isTargeted = true;
         return bestTarget; // Return the best target
     }
 

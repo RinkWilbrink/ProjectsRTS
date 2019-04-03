@@ -205,8 +205,8 @@ GameObject:
   - component: {fileID: 7259682689609770994}
   - component: {fileID: 3810396985833628241}
   m_Layer: 10
-  m_Name: mage
-  m_TagString: Mage
+  m_Name: SwordsmanRanged
+  m_TagString: Swordsmen
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -298,8 +298,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   soldierType: 2
-  Health: 4
-  damage: 2
+  Health: 3
+  damage: 1
   speedMultiplier: 3
   fakeWeapon: {fileID: 7259682688885938759}
   RealWeapon: {fileID: 7259682689340930217}

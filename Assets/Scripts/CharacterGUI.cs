@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class CharacterGUI : MonoBehaviour {
-    private int maxHealth;
+    private float maxHealth;
 
     private void Start() {
         maxHealth = gameObject.GetComponent<Soldier>().Health;
