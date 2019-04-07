@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Swordsmen
   - Mage
+  - FreezeSpell
   layers:
   - Default
   - TransparentFX

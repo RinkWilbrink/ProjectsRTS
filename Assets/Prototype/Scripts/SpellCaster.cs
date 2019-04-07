@@ -4,10 +4,8 @@ using UnityEngine;
 
 public class SpellCaster : MonoBehaviour, ISoldierAttack
 {
-    // Variables
-	
-    public void Attack()
+    public void Attack(GameObject weapon, Transform weaponpos)
     {
-        //Debug.Log("Casting Spell!");
+        Debug.Log("Casting Spell!");
     }
 }

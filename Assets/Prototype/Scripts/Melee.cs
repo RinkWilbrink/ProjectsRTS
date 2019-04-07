@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Melee : MonoBehaviour, ISoldierAttack
 {	
-    public void Attack()
+    public void Attack(GameObject weapon, Transform weaponpos)
     {
         //Debug.Log("Melee Attack");
     }
