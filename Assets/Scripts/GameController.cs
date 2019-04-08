@@ -4,15 +4,23 @@ using UnityEngine;
 
 public class GameController : MonoBehaviour {
     [SerializeField] private GameObject[] UI;
+    [SerializeField] private TMPro.TextMeshProUGUI manaText;
     public int playerPoints;
-    public int enemyPoints = 10;
+    public int playerMana;
+    public int enemyPoints;
     public Transform[] factionSpawnPos;
     private bool isGamePaused;
 
+    float timer;
     private void Update() {
         if ( Input.GetKeyDown(KeyCode.Escape) )
             isGamePaused = !isGamePaused;
-
+        timer += Time.deltaTime;
+        if ( timer >= .5f ) {
+            playerMana++;
+            timer = 0f;
+        }
+        manaText.text = "Mana: " + playerMana;
         if ( isGamePaused ) {
             for ( int i = 0; i < UI.Length; i++ ) UI[i].SetActive(true);
             Time.timeScale = 0;

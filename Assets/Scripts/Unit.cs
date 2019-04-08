@@ -7,6 +7,8 @@ using UnityEngine.EventSystems;
 public class Unit : MonoBehaviour {
     [Header("Cooldown for when the unit is bought")]
     [SerializeField] private float coolDown = 6f;
+    [Header("Is this unit locked?")]
+    public bool isUnlocked = false;
     [Header("The required points to buy this unit")]
     [SerializeField] private int requiredAmount;
     [Space(2)]
@@ -29,7 +31,7 @@ public class Unit : MonoBehaviour {
     private float timer;
     private float animationTime;
     void Update() {
-        if ( game.playerPoints < requiredAmount )
+        if ( game.playerPoints < requiredAmount || !isUnlocked )
             sprite.color = notEnoughCredits;
         else if ( game.playerPoints >= requiredAmount )
             sprite.color = standardColor;
@@ -39,11 +41,12 @@ public class Unit : MonoBehaviour {
         //    sprite.fillAmount += coolDown * Time.deltaTime;
     }
 
-    IEnumerator CountDown( float time ) {
+    private IEnumerator CountDown( float time ) {
         StartCoroutine("CountDownAnimation", time);
         yield return new WaitForSeconds(time);
     }
-    IEnumerator CountDownAnimation( float time ) {
+
+    private IEnumerator CountDownAnimation( float time ) {
         animationTime = 0f;
         while ( animationTime <= coolDown ) {
             animationTime += Time.deltaTime;
@@ -53,7 +56,7 @@ public class Unit : MonoBehaviour {
     }
 
     public void PurchaseUnit() {
-        if ( game.playerPoints >= requiredAmount && animationTime >= coolDown ) {
+        if ( game.playerPoints >= requiredAmount && animationTime >= coolDown && isUnlocked ) {
             //int i = System.Convert.ToInt16(EventSystem.current.currentSelectedGameObject.name);
             sprite.fillAmount = 0;
             //print("Button name: " + i);

@@ -41,16 +41,11 @@ public class ControlPoint : MonoBehaviour {
         else if ( factionCapped == 2 )
             GetComponent<MeshRenderer>().material.color = Color.red;
         for ( int i = 0; i < swordsmen.Length; i++ ) {
-            if ( Vector3.Distance(transform.position, swordsmen[i].transform.position) <= 10f ) {
-                //swordsmen[i].GetComponent<Soldier>().
-                if ( magesAreCapping && !isCappedBySwordsmen )
-                    swordsmenAreCapping = true;
+            if ( Vector3.Distance(transform.position, swordsmen[i].transform.position) <= 5f ) {
+                swordsmen[i].GetComponent<Soldier>().allowedToMove = false;
+                //if ( magesAreCapping && !isCappedBySwordsmen )
+                swordsmenAreCapping = true;
             }
-        }
-
-        for ( int i = 0; i < mages.Length; i++ ) {
-            if ( Vector3.Distance(transform.position, mages[i].transform.position) <= 10f && swordsmenAreCapping && !isCappedByMages )
-                magesAreCapping = true;
         }
 
         if ( swordsmenAreCapping && swordsmenSecureTimer <= maxTime )
@@ -78,7 +73,7 @@ public class ControlPoint : MonoBehaviour {
     private void OnGUI() {
         Vector3 targetPos;
         targetPos = Camera.main.WorldToScreenPoint(transform.position);
-        if ( factionCapped == 0 ) GUI.Box(new Rect(targetPos.x, ( Screen.height - targetPos.y ) - 35, 300, 50), "No faction has capped");
+        if ( factionCapped == 0 ) GUI.Box(new Rect(targetPos.x, ( Screen.height - targetPos.y ) - 35, 150, 30), "No faction has capped");
         else GUI.Box(new Rect(targetPos.x, ( Screen.height - targetPos.y ) - 35, 100, 50), "Faction: " + factionCapped);
     }
 }
