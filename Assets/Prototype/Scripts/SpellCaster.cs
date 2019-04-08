@@ -6,6 +6,7 @@ public class SpellCaster : MonoBehaviour, ISoldierAttack
 {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     potionDestroying PotionDestroying;
 
     public void Attack(GameObject weapon, Transform weaponpos, string whichSideThisIsFrom)
@@ -23,6 +24,13 @@ public class SpellCaster : MonoBehaviour, ISoldierAttack
                 localPotion.tag = "MageSpell";
                 break;
         }
+=======
+    // Variables
+	
+    public void Attack()
+    {
+        //Debug.Log("Casting Spell!");
+>>>>>>> parent of 2977d76... Mage is working
 =======
     // Variables
 	

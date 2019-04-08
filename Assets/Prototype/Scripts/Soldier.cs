@@ -20,7 +20,10 @@ public class Soldier : MonoBehaviour
     [SerializeField] private int speedMultiplier;
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     [SerializeField] public float maxFreezeTimer;
+=======
+>>>>>>> parent of 2977d76... Mage is working
 =======
 >>>>>>> parent of 2977d76... Mage is working
 =======
@@ -50,9 +53,12 @@ public class Soldier : MonoBehaviour
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     [HideInInspector] public float FreezeTimer = 0;
     private bool isFrozen = false;
 
+=======
+>>>>>>> parent of 2977d76... Mage is working
 =======
 >>>>>>> parent of 2977d76... Mage is working
 =======
@@ -107,6 +113,7 @@ public class Soldier : MonoBehaviour
                 {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                     if(soldierType == SoldierType.Mage)
                     {
                         //l_attackTargets[(int)soldierType].Attack(RealWeapon, ThrowingPosition.transform, attackTag);
@@ -117,6 +124,9 @@ public class Soldier : MonoBehaviour
                     {
                         TargetToAttack.GetComponent<Soldier>().Health -= damage;
                     }
+=======
+                    TargetToAttack.GetComponent<Soldier>().Health -= damage;
+>>>>>>> parent of 2977d76... Mage is working
 =======
                     TargetToAttack.GetComponent<Soldier>().Health -= damage;
 >>>>>>> parent of 2977d76... Mage is working
@@ -141,7 +151,11 @@ public class Soldier : MonoBehaviour
         {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
             if (allowedToMove && !isFrozen && canMove)
+=======
+            if (allowedToMove)
+>>>>>>> parent of 2977d76... Mage is working
 =======
             if (allowedToMove)
 >>>>>>> parent of 2977d76... Mage is working
@@ -187,6 +201,7 @@ public class Soldier : MonoBehaviour
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         // Check if the soldier should be frozen.
         if(FreezeTimer > 0) { FreezeTimer -= Time.deltaTime; }
         else
@@ -199,13 +214,19 @@ public class Soldier : MonoBehaviour
 =======
         if(soldierType != SoldierType.Looter)
 >>>>>>> parent of 2977d76... Mage is working
+=======
+        if(soldierType != SoldierType.Looter)
+>>>>>>> parent of 2977d76... Mage is working
         {
             transform.position = new Vector3(position, transform.position.y, transform.position.z);
         }
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         // Check if the Health of this soldier is 0 or less and "Kill" the soldier
+=======
+>>>>>>> parent of 2977d76... Mage is working
 =======
 >>>>>>> parent of 2977d76... Mage is working
 =======
@@ -248,6 +269,7 @@ public class Soldier : MonoBehaviour
     }
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 
     public void OnCollisionEnter(Collision collision)
     {
@@ -270,6 +292,8 @@ public class Soldier : MonoBehaviour
         }
 
     }
+=======
+>>>>>>> parent of 2977d76... Mage is working
 =======
 >>>>>>> parent of 2977d76... Mage is working
 =======
