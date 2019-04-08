@@ -33,7 +33,7 @@ public class Soldier : MonoBehaviour
     [SerializeField] private float AttckAnimationEndTime;
 
     // Booleans
-    private bool allowedToMove = true;
+    public bool allowedToMove = true;
     private bool isAttacking = false;
     private bool hasHitTarget = false;
 
@@ -158,14 +158,10 @@ public class Soldier : MonoBehaviour
             }
         } catch { Debug.Log("There are no targets to attack now! Dammit"); }
 
-        if(FreezeTimer > 0)
-        {
-            FreezeTimer -= Time.deltaTime;
-        }
+        // Check if the soldier should be frozen.
+        if(FreezeTimer > 0) { FreezeTimer -= Time.deltaTime; }
         else
-        {
-            isFrozen = false;
-        }
+        { isFrozen = false; }
 
         if(soldierType != SoldierType.Looter )
         {
@@ -180,6 +176,7 @@ public class Soldier : MonoBehaviour
             }
         }
 
+        // Check if the Health of this soldier is 0 or less and "Kill" the soldier
         if (Health <= 0)
         {
             Debug.Log(gameObject.name + " has Died");
@@ -202,12 +199,11 @@ public class Soldier : MonoBehaviour
                 bestTarget = potentialTarget;
             }
         }
-        return bestTarget; // Return the best target
+        return bestTarget; // Return the best target for this soldier to attack
     }
 
     /// <summary> Check the distance between 2 Vector3D's </summary>
     /// <param name="pos1">The first Vector (Point A).</param> <param name="pos2">The second Vector (Point B).</param>
-    /// <returns>A float value with the distance between Two 3D positions</returns>
     private float DistanceBetween(Vector3 pos1, Vector3 pos2)
     {
         // Calculate distance of the Vectors
@@ -220,10 +216,23 @@ public class Soldier : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.collider.tag == "FreezeSpell")
+        switch (gameObject.tag)
         {
-            isFrozen = true;
-            FreezeTimer = maxFreezeTimer;
+            case "Mage": // Magespell
+                if (collision.collider.tag == "SwordsmenSpell")
+                {
+                    isFrozen = true;
+                    FreezeTimer = maxFreezeTimer;
+                }
+                break;
+            case "Swordsmen": // SwordsmenSpell
+                if (collision.collider.tag == "Magespell")
+                {
+                    isFrozen = true;
+                    FreezeTimer = maxFreezeTimer;
+                }
+                break;
         }
+        
     }
 }

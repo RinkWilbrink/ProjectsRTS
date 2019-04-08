@@ -6,7 +6,7 @@ public class Archer : MonoBehaviour, ISoldierAttack
 {
     // Variables
 
-    public void Attack(GameObject weapon, Transform weaponpos)
+    public void Attack(GameObject weapon, Transform weaponpos, string objTag)
     {
         //Debug.Log("I took an arrow to my knee!!!");
     }

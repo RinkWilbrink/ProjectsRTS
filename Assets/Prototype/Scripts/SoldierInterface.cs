@@ -4,7 +4,7 @@ using UnityEngine;
 
 public interface ISoldierAttack
 {
-    void Attack(GameObject weapon, Transform weaponpos);
+    void Attack(GameObject weapon, Transform weaponpos, string whichSideThisIsFrom);
 }
 
 class targetAttacking
@@ -16,11 +16,11 @@ class targetAttacking
         iSoldierAttack = soldierAttack;
     }
 
-    public void Attack(GameObject weapon, Transform weaponpos)
+    public void Attack(GameObject weapon, Transform weaponpos, string whichSideThisIsFrom)
     {
         if(iSoldierAttack != null) // Check if iSoldierAttack is something to prefent null reference exceptions
         {
-            iSoldierAttack.Attack(weapon, weaponpos);
+            iSoldierAttack.Attack(weapon, weaponpos, whichSideThisIsFrom);
         }
     }
 }
