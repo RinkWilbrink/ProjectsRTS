@@ -24,7 +24,6 @@ public class Soldier : MonoBehaviour
     [Header("Weapon animation objects")]
     [SerializeField] private GameObject fakeWeapon;
     [SerializeField] private GameObject RealWeapon;
-    [SerializeField] private GameObject ThrowingPosition;
 
     [Header("Attack Stats")]
     [SerializeField] private float maxAttackSpeed;
@@ -43,7 +42,7 @@ public class Soldier : MonoBehaviour
     private float TargetDamageTimer = 0;
     private float TimerBetweenAttacks = 0;
     [HideInInspector] public float FreezeTimer = 0;
-
+    
     private bool isFrozen = false;
     private float position;
     private string attackTag;
@@ -103,6 +102,7 @@ public class Soldier : MonoBehaviour
                     {
                         TargetToAttack.GetComponent<Soldier>().Health -= damage;
                     }
+                    TargetToAttack.GetComponent<Soldier>().Health -= damage;
                     hasHitTarget = true;
                 }
                 if(TargetDamageTimer >= AttckAnimationEndTime)
@@ -131,7 +131,7 @@ public class Soldier : MonoBehaviour
             {
                 EnemyArray = GameObject.FindGameObjectsWithTag(attackTag);
                 TargetToAttack = GetClosestEnemy(EnemyArray, gameObject.transform);
-            } catch { /*Debug.Log(gameObject.name + " Couldnt find a target!");*/ }
+            } catch { Debug.Log(gameObject.name + " Couldnt find a target!"); }
         }
         if(soldierType == SoldierType.Mage)
         {
@@ -144,7 +144,7 @@ public class Soldier : MonoBehaviour
             {
                 isAttacking = true;
             }
-        } catch { /*Debug.Log("There is no target to compare its distance to");*/ }
+        } catch { Debug.Log("There is no target to compare its distance to"); }
 
         try
         {
@@ -155,14 +155,18 @@ public class Soldier : MonoBehaviour
                 allowedToMove = true;
                 TargetToAttack = null;
             }
-        } catch { /*Debug.Log("There are no targets to attack now! Dammit"); */ }
-
+        } catch { Debug.Log("There are no targets to attack now! Dammit");  }
+        
         // Check if the soldier should be frozen.
         if(FreezeTimer > 0) { FreezeTimer -= Time.deltaTime; }
         else
         { isFrozen = false; }
 
         if(soldierType != SoldierType.Looter )
+        {
+            transform.position = new Vector3(position, transform.position.y, transform.position.z);
+        }
+        if(soldierType != SoldierType.Looter)
         {
             transform.position = new Vector3(position, transform.position.y, transform.position.z);
         }
@@ -222,6 +226,5 @@ public class Soldier : MonoBehaviour
                 }
                 break;
         }
-
     }
 }
