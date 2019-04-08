@@ -32,7 +32,7 @@ public class EnemyBehaviour : MonoBehaviour {
         //    InstantiateUnit(ranged, 30);
         //if ( game.enemyPoints >= 30 && looterUnits < 333 && !unitSpawned )
         //    InstantiateUnit(spellcaster, 30);
-        print(looterUnits);
+
         if ( unitSpawned )
             spawnTimer += Time.deltaTime;
         if ( spawnTimer > spawnCooldown ) {

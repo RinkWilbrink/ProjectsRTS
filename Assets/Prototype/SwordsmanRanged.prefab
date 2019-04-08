@@ -204,6 +204,7 @@ GameObject:
   - component: {fileID: 7259682689609770998}
   - component: {fileID: 7259682689609770994}
   - component: {fileID: 3810396985833628241}
+  - component: {fileID: 1254052042642811758}
   m_Layer: 10
   m_Name: SwordsmanRanged
   m_TagString: Swordsmen
@@ -317,5 +318,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe6a1a9d766391e488bbf0512182b593, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1254052042642811758
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7259682689609770999}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fcbfeb49ac407a2489f826e73c180477, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

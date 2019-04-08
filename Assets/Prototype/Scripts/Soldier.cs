@@ -153,7 +153,7 @@ public class Soldier : MonoBehaviour
     public GameObject GetClosestEnemy(GameObject[] enemies)
     {
         GameObject bestTarget = null;
-        float closestDistanceSqr = Mathf.Infinity;
+        float closestDistanceSqr = 15f; // Mathf.Infinity;
         Vector3 currentPosition = transform.position;
         foreach (GameObject potentialTarget in enemies)
         {

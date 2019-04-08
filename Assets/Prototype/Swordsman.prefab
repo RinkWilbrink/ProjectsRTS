@@ -172,6 +172,7 @@ GameObject:
   - component: {fileID: 559490941854426753}
   - component: {fileID: 559490941854426752}
   - component: {fileID: 2274666816639974704}
+  - component: {fileID: 5212982126192716880}
   m_Layer: 10
   m_Name: Swordsman
   m_TagString: Swordsmen
@@ -269,7 +270,6 @@ MonoBehaviour:
   Health: 6
   damage: 2
   speedMultiplier: 3
-  allowedToMove: 1
   fakeWeapon: {fileID: 559490941674625481}
   RealWeapon: {fileID: 559490941486537571}
   maxAttackSpeed: 2
@@ -286,6 +286,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe6a1a9d766391e488bbf0512182b593, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &5212982126192716880
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 559490941854426755}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fcbfeb49ac407a2489f826e73c180477, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &559490942454472015
