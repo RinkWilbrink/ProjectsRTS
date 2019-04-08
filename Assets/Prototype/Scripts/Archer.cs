@@ -7,7 +7,11 @@ public class Archer : MonoBehaviour, ISoldierAttack
     // Variables
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     public void Attack(GameObject weapon, Transform weaponpos, string objTag)
+=======
+    public void Attack()
+>>>>>>> parent of 2977d76... Mage is working
 =======
     public void Attack()
 >>>>>>> parent of 2977d76... Mage is working

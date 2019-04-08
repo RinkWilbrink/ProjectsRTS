@@ -399,6 +399,7 @@ Transform:
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 <<<<<<< HEAD
+<<<<<<< HEAD
 --- !u!1001 &1034173619
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -483,6 +484,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7cbee94fe13773644a42f4783fde732f, type: 3}
+=======
+>>>>>>> parent of 2977d76... Mage is working
 =======
 >>>>>>> parent of 2977d76... Mage is working
 --- !u!1001 &559490943054466322
