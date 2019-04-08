@@ -18,13 +18,15 @@ public class Soldier : MonoBehaviour
     [SerializeField] public float Health;
     [SerializeField] private int damage;
     [SerializeField] private int speedMultiplier;
+<<<<<<< HEAD
     [SerializeField] public float maxFreezeTimer;
+=======
+>>>>>>> parent of 2977d76... Mage is working
 
     // Animation for the Soldiers weapon
     [Header("Weapon animation objects")]
     [SerializeField] private GameObject fakeWeapon;
     [SerializeField] private GameObject RealWeapon;
-    [SerializeField] private GameObject ThrowingPosition;
 
     [Header("Attack Stats")]
     [SerializeField] private float maxAttackSpeed;
@@ -43,9 +45,12 @@ public class Soldier : MonoBehaviour
     private float TargetDamageTimer = 0;
     private float TimerBetweenAttacks = 0;
 
+<<<<<<< HEAD
     [HideInInspector] public float FreezeTimer = 0;
     private bool isFrozen = false;
 
+=======
+>>>>>>> parent of 2977d76... Mage is working
     private float position;
     private string attackTag;
 
@@ -81,22 +86,20 @@ public class Soldier : MonoBehaviour
 
     void Update()
     {
-        if (isAttacking && !isFrozen)
+        if (isAttacking)
         {
             TimerBetweenAttacks -= Time.deltaTime;
             if (TimerBetweenAttacks <= 0)
             {
                 allowedToMove = false;
 
-                if(soldierType != SoldierType.Mage)
-                {
-                    fakeWeapon.SetActive(false); RealWeapon.SetActive(true);
-                }
+                fakeWeapon.SetActive(false); RealWeapon.SetActive(true);
 
                 TargetDamageTimer += Time.deltaTime;
 
                 if (TargetDamageTimer >= AttackHitTime && hasHitTarget == false)
                 {
+<<<<<<< HEAD
                     if(soldierType == SoldierType.Mage)
                     {
                         //l_attackTargets[(int)soldierType].Attack(RealWeapon, ThrowingPosition.transform, attackTag);
@@ -107,6 +110,9 @@ public class Soldier : MonoBehaviour
                     {
                         TargetToAttack.GetComponent<Soldier>().Health -= damage;
                     }
+=======
+                    TargetToAttack.GetComponent<Soldier>().Health -= damage;
+>>>>>>> parent of 2977d76... Mage is working
                     hasHitTarget = true;
                 }
                 if(TargetDamageTimer >= AttckAnimationEndTime)
@@ -123,7 +129,11 @@ public class Soldier : MonoBehaviour
         }
         else
         {
+<<<<<<< HEAD
             if (allowedToMove && !isFrozen && canMove)
+=======
+            if (allowedToMove)
+>>>>>>> parent of 2977d76... Mage is working
             {
                 position += speedMultiplier * Time.deltaTime;
             }
@@ -161,17 +171,24 @@ public class Soldier : MonoBehaviour
             }
         } catch { /*Debug.Log("There are no targets to attack now! Dammit"); */ }
 
+<<<<<<< HEAD
         // Check if the soldier should be frozen.
         if(FreezeTimer > 0) { FreezeTimer -= Time.deltaTime; }
         else
         { isFrozen = false; }
 
         if(soldierType != SoldierType.Looter )
+=======
+        if(soldierType != SoldierType.Looter)
+>>>>>>> parent of 2977d76... Mage is working
         {
             transform.position = new Vector3(position, transform.position.y, transform.position.z);
         }
 
+<<<<<<< HEAD
         // Check if the Health of this soldier is 0 or less and "Kill" the soldier
+=======
+>>>>>>> parent of 2977d76... Mage is working
         if (Health <= 0)
         {
             Debug.Log(gameObject.name + " has Died");
@@ -208,6 +225,7 @@ public class Soldier : MonoBehaviour
         // Return the distance between the XY calculated position and the Z position for the final result.
         return Mathf.Sqrt((posX * posX) + (posY * posY) + (posZ * posZ));
     }
+<<<<<<< HEAD
 
     public void OnCollisionEnter(Collision collision)
     {
@@ -230,4 +248,6 @@ public class Soldier : MonoBehaviour
         }
 
     }
+=======
+>>>>>>> parent of 2977d76... Mage is working
 }

@@ -268,10 +268,9 @@ MonoBehaviour:
   Health: 1
   damage: 1
   speedMultiplier: 1
-  maxFreezeTimer: 5
+  allowedToMove: 1
   fakeWeapon: {fileID: 559490941674625481}
   RealWeapon: {fileID: 559490941486537571}
-  ThrowingPosition: {fileID: 0}
   maxAttackSpeed: 1
   maxAttackDistance: 1.5
   AttackHitTime: 0.2

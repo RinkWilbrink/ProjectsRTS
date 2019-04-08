@@ -6,8 +6,11 @@ TagManager:
   tags:
   - Swordsmen
   - Mage
+<<<<<<< HEAD
   - MageSpell
   - SwordsmenSpell
+=======
+>>>>>>> parent of 2977d76... Mage is working
   layers:
   - Default
   - TransparentFX
