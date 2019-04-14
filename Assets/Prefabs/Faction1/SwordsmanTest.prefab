@@ -184,12 +184,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   soldierType: 1
-  Health: 6
-  damage: 2
+  health: 4
+  damage: 0.5
   speedMultiplier: 2
+  maxFreezeTimer: 0
   fakeWeapon: {fileID: 0}
   RealWeapon: {fileID: 0}
-  maxAttackSpeed: 0
-  maxAttackDistance: 0
+  ThrowingPosition: {fileID: 0}
+  maxAttackSpeed: 2
+  maxAttackDistance: 2
   AttackHitTime: 0
   AttckAnimationEndTime: 0
+  allowedToMove: 1

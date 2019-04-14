@@ -10,6 +10,9 @@ public class ControlPoint : MonoBehaviour {
     private bool isCappedByMages = false;
     private int factionCapped = 0;
     private float capTime;
+    private float swordsmenMaxCapTimer;
+    private float mageMaxCapTimer;
+    private float maxCapTime = 120f;
     /// <summary>
     /// faction index:
     /// 0 = uncapped
@@ -23,16 +26,20 @@ public class ControlPoint : MonoBehaviour {
         factionCapped = 0;
     }
 
-    GameObject[] swordsmen;
-    GameObject[] mages;
+    //GameObject[] swordsmen;
+    //GameObject[] mages;
+    //Vector3 controlPointSize = new Vector3(3, 10, 3);
+    float controlPointSize = 3;
+    bool mageInZone;
+    bool swordsmenInZone;
     private void Update() {
-        swordsmen = GameObject.FindGameObjectsWithTag("Swordsmen");
-        mages = GameObject.FindGameObjectsWithTag("Mage");
+        //swordsmen = GameObject.FindGameObjectsWithTag("Swordsmen");
+        //mages = GameObject.FindGameObjectsWithTag("Mage");
 
-        if ( mages == null )
-            Debug.LogWarning("No Mages in the battlefield");
-        if ( swordsmen == null )
-            Debug.LogWarning("No Swordsmen in the battlefield");
+        //if ( mages == null )
+        //    Debug.LogWarning("No Mages in the battlefield");
+        //if ( swordsmen == null )
+        //    Debug.LogWarning("No Swordsmen in the battlefield");
 
         if ( factionCapped == 0 )
             GetComponent<MeshRenderer>().material.color = Color.white;
@@ -40,40 +47,100 @@ public class ControlPoint : MonoBehaviour {
             GetComponent<MeshRenderer>().material.color = Color.green;
         else if ( factionCapped == 2 )
             GetComponent<MeshRenderer>().material.color = Color.red;
-        for ( int i = 0; i < swordsmen.Length; i++ ) {
-            if ( Vector3.Distance(transform.position, swordsmen[i].transform.position) <= 5f ) {
-                swordsmen[i].GetComponent<Soldier>().allowedToMove = false;
-                //if ( magesAreCapping && !isCappedBySwordsmen )
-                swordsmenAreCapping = true;
+
+        LayerMask swordsLayerMask = LayerMask.GetMask("SwordsLayer");
+        LayerMask magesLayerMask = LayerMask.GetMask("MagesLayer");
+        Collider[] swordsmen = Physics.OverlapSphere(transform.position, controlPointSize, swordsLayerMask.value);
+        Collider[] mages = Physics.OverlapSphere(transform.position, controlPointSize, magesLayerMask.value);
+
+        if ( swordsmen.Length == 0 )
+            swordsmenInZone = false;
+        if ( swordsmen.Length >= 1 )
+            swordsmenInZone = true;
+        if ( mages.Length == 0 )
+            mageInZone = false;
+        if ( mages.Length >= 1 )
+            mageInZone = true;
+
+        for ( int swordsmenIndex = 0; swordsmenIndex < swordsmen.Length; swordsmenIndex++ ) {
+            if ( swordsmen[swordsmenIndex].tag == "Swordsmen" ) {
+                if ( !isCappedBySwordsmen )
+                    swordsmen[swordsmenIndex].GetComponent<Soldier>().allowedToMove = false;
+                else
+                    swordsmen[swordsmenIndex].GetComponent<Soldier>().allowedToMove = true;
+
+                if ( !mageInZone && swordsmenInZone && !isCappedBySwordsmen )
+                    swordsmenAreCapping = true;
+                else
+                    swordsmenAreCapping = false;
             }
         }
 
-        if ( swordsmenAreCapping && swordsmenSecureTimer <= maxTime )
+        for ( int mageIndex = 0; mageIndex < mages.Length; mageIndex++ ) {
+            if ( mages[mageIndex].tag == "Mage" ) {
+                if ( !isCappedByMages )
+                    mages[mageIndex].GetComponent<Soldier>().allowedToMove = false;
+                else
+                    mages[mageIndex].GetComponent<Soldier>().allowedToMove = true;
+
+                if ( !swordsmenInZone && mageInZone && !isCappedByMages )
+                    magesAreCapping = true;
+                else
+                    magesAreCapping = false;
+            }
+        }
+
+        //print("Swordsman is in the zone: " + swordsmenInZone);
+        //print("Swordsmen are capping: " + swordsmenAreCapping);
+        //print("Mages are capping: " + magesAreCapping);
+        //print("Mage is in the zone: " + mageInZone);
+
+        if ( swordsmenAreCapping && !magesAreCapping ) {
             swordsmenSecureTimer += Time.deltaTime;
+            //if ( mageSecureTimer >= .1f )
+            //    mageSecureTimer -= Time.deltaTime;
+        }
+        if ( magesAreCapping && !swordsmenAreCapping ) {
+            mageSecureTimer += Time.deltaTime;
+            //if ( swordsmenSecureTimer >= .1f )
+            //    swordsmenSecureTimer -= Time.deltaTime;
+        }
 
-        if ( !swordsmenAreCapping && swordsmenSecureTimer >= 0f )
-            swordsmenSecureTimer -= Time.deltaTime;
-
-        if ( swordsmenSecureTimer >= maxTime )
+        if ( swordsmenSecureTimer >= maxTime && !isCappedBySwordsmen ) {
+            isCappedByMages = false;
             isCappedBySwordsmen = true;
+            swordsmenSecureTimer = 0f;
+        }
+        if ( mageSecureTimer >= maxTime && !isCappedByMages ) {
+            isCappedBySwordsmen = false;
+            isCappedByMages = true;
+            mageSecureTimer = 0f;
+        }
 
-        //if ( !swordsmenAreCapping )
-        //    Check(mages, magesAreCapping, mageSecureTimer, isCappedByMages, 10f);
-        if ( isCappedByMages )
-            factionCapped = 2;
-        if ( isCappedBySwordsmen )
+        if ( isCappedBySwordsmen ) {
+            swordsmenMaxCapTimer += Time.deltaTime;
             factionCapped = 1;
+        }
+        if ( isCappedByMages ) {
+            mageMaxCapTimer += Time.deltaTime;
+            factionCapped = 2;
+        }
 
-        print("Swordsmen Timer: " + swordsmenSecureTimer);
-        print("Swordsmen are capping? " + swordsmenAreCapping);
-        print("Mages are capping? " + magesAreCapping);
-        print("Faction capped: " + factionCapped);
+        if ( swordsmenMaxCapTimer > maxCapTime )
+            print("swordsmen have won!");
+        if ( mageMaxCapTimer > maxCapTime )
+            print("mages have won!");
+    }
+
+    private void OnDrawGizmos() {
+        Gizmos.DrawWireSphere(transform.position, controlPointSize);
     }
 
     private void OnGUI() {
         Vector3 targetPos;
         targetPos = Camera.main.WorldToScreenPoint(transform.position);
         if ( factionCapped == 0 ) GUI.Box(new Rect(targetPos.x, ( Screen.height - targetPos.y ) - 35, 150, 30), "No faction has capped");
-        else GUI.Box(new Rect(targetPos.x, ( Screen.height - targetPos.y ) - 35, 100, 50), "Faction: " + factionCapped);
+        else if ( factionCapped == 1 ) GUI.Box(new Rect(targetPos.x, ( Screen.height - targetPos.y ) - 35, 100, 50), "Faction: " + factionCapped + "\n" + "Progress: " + (int)swordsmenMaxCapTimer + "/" + maxCapTime);
+        else if ( factionCapped == 2 ) GUI.Box(new Rect(targetPos.x, ( Screen.height - targetPos.y ) - 35, 100, 50), "Faction: " + factionCapped + "\n" + "Progress: " + (int)mageMaxCapTimer + "/" + maxCapTime);
     }
 }

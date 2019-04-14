@@ -10,22 +10,22 @@ public class KillPlayer : MonoBehaviour {
     }
 
     private void Update() {
-        if ( gameObject.GetComponent<Soldier>().Health <= 0 )
+        if ( gameObject.GetComponent<Soldier>().health <= 0 )
             Dead();
         if ( Input.GetKeyDown(KeyCode.D) )
-            gameObject.GetComponent<Soldier>().Health -= 1;
+            gameObject.GetComponent<Soldier>().health -= 1;
     }
 
     private void OnTriggerEnter( Collider collision ) {
-        if ( collision.gameObject.tag == "DamageSpell" && gameObject.GetComponent<Looter>().factionIndex == 2 || tag == "Mage" )
-            gameObject.GetComponent<Soldier>().Health -= Spells.damage;
-        if ( collision.gameObject.tag == "HealingSpell" && gameObject.GetComponent<Looter>().factionIndex == 1 || tag == "Swordsmen" )
-            gameObject.GetComponent<Soldier>().Health += Spells.healing;
+        if ( collision.gameObject.tag == "DamageSpell" && tag == "Mage" )
+            gameObject.GetComponent<Soldier>().health -= Spells.damage;
+        if ( collision.gameObject.tag == "HealingSpell" && tag == "Swordsmen" )
+            gameObject.GetComponent<Soldier>().health += Spells.healing;
     }
 
     private void OnTriggerStay( Collider collision ) {
-        if ( collision.gameObject.tag == "HealingSpell" && gameObject.GetComponent<Looter>().factionIndex == 1 || tag == "Swordsmen" )
-            gameObject.GetComponent<Soldier>().Health += Spells.healing * Time.deltaTime;
+        if ( collision.gameObject.tag == "HealingSpell" && tag == "Swordsmen" )
+            gameObject.GetComponent<Soldier>().health += Spells.healing * Time.deltaTime;
     }
 
     private void Dead() {

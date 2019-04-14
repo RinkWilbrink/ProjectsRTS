@@ -7,6 +7,8 @@ public class Spell : MonoBehaviour {
     private UnityEngine.UI.Image sprite;
     [Header("Cooldown for when the unit is bought")]
     [SerializeField] private float coolDown = 6f;
+    [Header("Is this unit locked?")]
+    public bool isUnlocked = false;
     [Header("The required points to buy this unit")]
     [SerializeField] private int requiredAmount;
     [Space(2)]
@@ -26,9 +28,9 @@ public class Spell : MonoBehaviour {
 
     private float timer;
     void Update() {
-        if ( game.playerPoints < requiredAmount )
+        if ( game.playerMana < requiredAmount || !isUnlocked )
             sprite.color = notEnoughCredits;
-        else if ( game.playerPoints >= requiredAmount )
+        else if ( game.playerMana >= requiredAmount )
             sprite.color = standardColor;
         if ( canCastSpell ) {
             // drag
@@ -59,11 +61,11 @@ public class Spell : MonoBehaviour {
     }
 
     public void PurchaseSpell() {
-        if ( game.playerPoints >= requiredAmount && animationTime >= coolDown && !canCastSpell ) {
+        if ( game.playerMana >= requiredAmount && animationTime >= coolDown && !canCastSpell && isUnlocked ) {
             //int i = System.Convert.ToInt16(EventSystem.current.currentSelectedGameObject.name);
             sprite.fillAmount = 0;
             //print("Button name: " + i);
-            game.playerPoints -= requiredAmount;
+            game.playerMana -= requiredAmount;
             timer = 0f;
             animationTime = 0f;
             canCastSpell = true;

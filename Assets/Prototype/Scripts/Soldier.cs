@@ -15,8 +15,8 @@ public class Soldier : MonoBehaviour
     [SerializeField] public SoldierType soldierType;
 
     [Header("Soldier Stats")]
-    [SerializeField] public float Health;
-    [SerializeField] private int damage;
+    [SerializeField] public float health;
+    [SerializeField] public float damage;
     [SerializeField] private int speedMultiplier;
     [SerializeField] private float maxFreezeTimer;
 
@@ -106,7 +106,7 @@ public class Soldier : MonoBehaviour
                     }
                     else
                     {
-                        TargetToAttack.GetComponent<Soldier>().Health -= damage;
+                        TargetToAttack.GetComponent<Soldier>().health -= damage;
                     }
                     hasHitTarget = true;
                 }
@@ -149,7 +149,7 @@ public class Soldier : MonoBehaviour
 
         try
         {
-            if (TargetToAttack.GetComponent<Soldier>().Health <= 0)
+            if (TargetToAttack.GetComponent<Soldier>().health <= 0)
             {
                 TimerBetweenAttacks = 0;
                 isAttacking = false;
@@ -177,7 +177,7 @@ public class Soldier : MonoBehaviour
         }
 
         // Check if the Health of this soldier is 0 or less and "Kill" the soldier
-        if (Health <= 0)
+        if (health <= 0)
         {
             Debug.Log(gameObject.name + " has Died");
             Destroy(gameObject);

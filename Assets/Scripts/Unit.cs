@@ -63,8 +63,8 @@ public class Unit : MonoBehaviour {
             game.playerPoints -= requiredAmount;
             boughtUnit = true;
             animationTime = 0f;
-            Instantiate(objectToSpawn, game.factionSpawnPos[0].position, game.factionSpawnPos[0].rotation);
-            Debug.Log("Bought unit");
+            Instantiate(objectToSpawn, game.factionSpawnPos.position, game.factionSpawnPos.rotation);
+            //Debug.Log("Bought unit");
             StartCoroutine("CountDown", coolDown);
         }
     }

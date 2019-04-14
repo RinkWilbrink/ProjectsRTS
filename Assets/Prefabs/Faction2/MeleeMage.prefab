@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 97674890485810118}
   - component: {fileID: 97674890485810119}
   - component: {fileID: 97674890485810116}
+  - component: {fileID: 3015341623316289438}
   m_Layer: 10
   m_Name: MeleeMage
   m_TagString: Mage
@@ -120,20 +121,34 @@ MonoBehaviour:
   m_GameObject: {fileID: 97674890485810117}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1cde1d65c6008d644aefc847d930de63, type: 3}
+  m_Script: {fileID: 11500000, guid: 018e522fd5d7a74428e92a7710ce42ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   soldierType: 1
-  Health: 5
-  damage: 2
-  speedMultiplier: 1
-  maxAttackSpeed: 2
+  health: 4
+  damage: 0.5
+  speedMultiplier: 2
+  maxFreezeTimer: 0
+  fakeWeapon: {fileID: 0}
+  RealWeapon: {fileID: 0}
+  ThrowingPosition: {fileID: 0}
+  maxAttackSpeed: 1
   maxAttackDistance: 2
+  AttackHitTime: 0
+  AttckAnimationEndTime: 0
   allowedToMove: 1
-  fakeWeapon: {fileID: 97674891147482420}
-  RealWeapon: {fileID: 97674891749785172}
-  AttackHitTime: 1
-  AttckAnimationEndTime: 4
+--- !u!114 &3015341623316289438
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 97674890485810117}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fcbfeb49ac407a2489f826e73c180477, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &97674891147482420
 GameObject:
   m_ObjectHideFlags: 0

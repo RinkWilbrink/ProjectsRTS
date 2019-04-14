@@ -39,6 +39,7 @@ public class Looter : MonoBehaviour {
         if ( timer > 3f && !abool ) {
             flipper = !flipper;
             abool = true;
+            goldMine[testIndex].GetComponent<GoldMine>().isOccupied = false;
         }
 
         if ( timer > 3f ) {
@@ -72,7 +73,6 @@ public class Looter : MonoBehaviour {
                     game.enemyPoints += 10;
                 }
                 isGathering = false;
-                goldMine[testIndex].GetComponent<GoldMine>().isOccupied = false;
                 abool = false;
                 flipper = !flipper;
                 GetComponent<SpriteRenderer>().flipX = flipper;

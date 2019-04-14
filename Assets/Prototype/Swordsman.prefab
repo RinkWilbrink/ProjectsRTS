@@ -138,7 +138,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 497bb8452feafc84bb93945161ba47a7, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -170,6 +170,7 @@ GameObject:
   - component: {fileID: 559490941854426759}
   - component: {fileID: 559490941854426758}
   - component: {fileID: 559490941854426753}
+  - component: {fileID: 6684760563739956256}
   - component: {fileID: 559490941854426752}
   - component: {fileID: 2274666816639974704}
   - component: {fileID: 5212982126192716880}
@@ -254,6 +255,22 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!54 &6684760563739956256
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 559490941854426755}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 112
+  m_CollisionDetection: 0
 --- !u!114 &559490941854426752
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -267,15 +284,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   soldierType: 1
-  Health: 6
+  health: 6
   damage: 2
   speedMultiplier: 3
+  maxFreezeTimer: 0
   fakeWeapon: {fileID: 559490941674625481}
   RealWeapon: {fileID: 559490941486537571}
+  ThrowingPosition: {fileID: 0}
   maxAttackSpeed: 2
   maxAttackDistance: 1.5
   AttackHitTime: 0.2
   AttckAnimationEndTime: 0.583
+  allowedToMove: 1
 --- !u!114 &2274666816639974704
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -357,7 +377,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 497bb8452feafc84bb93945161ba47a7, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

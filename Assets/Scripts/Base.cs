@@ -9,9 +9,7 @@ public class Base : MonoBehaviour {
     private GameController game;
 
     private void Start() {
-        maxHealth = GetComponent<Soldier>().Health;
-        baseHealth = maxHealth;
-        game = FindObjectOfType<GameController>();
+        maxHealth = GetComponent<Soldier>().health;
     }
 
     private void Update() {
@@ -21,10 +19,10 @@ public class Base : MonoBehaviour {
             Debug.LogError("Player " + "1" + " has won!");
     }
 
-    private void OnGUI() {
-        Vector3 targetPos;
-        targetPos = Camera.main.WorldToScreenPoint(transform.position);
-        GUI.Box(new Rect(targetPos.x, ( Screen.height - targetPos.y ) - 35, 100, 60), gameObject.GetComponent<Soldier>().soldierType.ToString()
-            + "\n" + "HP: " + gameObject.GetComponent<Soldier>().Health.ToString() + " | " + maxHealth + "\n" + game.playerPoints);
-    }
+    //private void OnGUI() {
+    //    Vector3 targetPos;
+    //    targetPos = Camera.main.WorldToScreenPoint(transform.position);
+    //    GUI.Box(new Rect(targetPos.x, ( Screen.height - targetPos.y ) - 35, 100, 60), gameObject.GetComponent<Soldier>().soldierType.ToString()
+    //        + "\n" + "HP: " + gameObject.GetComponent<Soldier>().health.ToString() + " | " + maxHealth + "\n" + game.playerPoints);
+    //}
 }

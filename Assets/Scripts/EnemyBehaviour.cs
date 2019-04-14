@@ -43,7 +43,7 @@ public class EnemyBehaviour : MonoBehaviour {
 
     private void InstantiateUnit( GameObject go, int cost ) {
         Instantiate(go, transform.position, transform.rotation);
-        Debug.Log(go.name + " spawned");
+        //Debug.Log(go.name + " spawned");
         unitsSpawned++;
         unitSpawned = true;
         game.enemyPoints -= cost;

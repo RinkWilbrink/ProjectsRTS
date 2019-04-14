@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 8353205251665294036}
   - component: {fileID: 2531394198999420689}
   - component: {fileID: 4548371767827018452}
-  m_Layer: 10
+  m_Layer: 11
   m_Name: Looter2
   m_TagString: Mage
   m_Icon: {fileID: 0}
@@ -142,16 +142,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   soldierType: 0
-  Health: 5
+  health: 5
   damage: 0
   speedMultiplier: 0
-  allowedToMove: 0
+  maxFreezeTimer: 0
   fakeWeapon: {fileID: 0}
   RealWeapon: {fileID: 0}
+  ThrowingPosition: {fileID: 0}
   maxAttackSpeed: 0
   maxAttackDistance: 0
   AttackHitTime: 0
   AttckAnimationEndTime: 0
+  allowedToMove: 0
 --- !u!114 &2531394198999420689
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -176,4 +178,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fcbfeb49ac407a2489f826e73c180477, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healthPoints: 5
