@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Base : MonoBehaviour {
 
@@ -10,13 +11,17 @@ public class Base : MonoBehaviour {
 
     private void Start() {
         maxHealth = GetComponent<Soldier>().health;
+        if ( GetComponent<Soldier>().health <= 0 && tag == "Swordsmen" )
+            SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
+        if ( GetComponent<Soldier>().health <= 0 && tag == "Mage" )
+            SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
     }
 
     private void Update() {
-        if ( baseHealth <= 0 && tag == "Swordsmen" )
-            Debug.LogError("Player " + "2" + " has won!");
-        if ( baseHealth <= 0 && tag == "Mage" )
-            Debug.LogError("Player " + "1" + " has won!");
+        if ( GetComponent<Soldier>().health <= 0 && tag == "Swordsmen" )
+            SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
+        if ( GetComponent<Soldier>().health <= 0 && tag == "Mage" )
+            SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
     }
 
     //private void OnGUI() {

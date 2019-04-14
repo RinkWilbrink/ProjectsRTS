@@ -399,7 +399,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   soldierType: 2
   health: 50
-  damage: 0.5
+  damage: 0.1
   speedMultiplier: 0
   maxFreezeTimer: 0
   fakeWeapon: {fileID: 0}
@@ -894,7 +894,7 @@ GameObject:
   - component: {fileID: 135580079}
   - component: {fileID: 135580078}
   m_Layer: 5
-  m_Name: Options
+  m_Name: Resume
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -959,7 +959,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 135580079}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1683967091}
+        m_MethodName: ResumeGame
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &135580079
@@ -2370,7 +2381,7 @@ MonoBehaviour:
   maxAttackDistance: 0
   AttackHitTime: 0
   AttckAnimationEndTime: 0
-  allowedToMove: 1
+  allowedToMove: 0
 --- !u!23 &562218968
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -4491,7 +4502,7 @@ MonoBehaviour:
   - {fileID: 8906171939021922801, guid: 28d7dc4d463cbf4489a36d458d40f184, type: 3}
   - {fileID: 559490941854426755, guid: 04d7c1fa20ba2404aa6e4170d64b41ec, type: 3}
   - {fileID: 7259682689609770999, guid: 7cbee94fe13773644a42f4783fde732f, type: 3}
-  spawnCooldown: 3.99
+  spawnCooldown: 4.5
   looterUnits: 0
   unitsSpawned: 0
 --- !u!114 &964183595
@@ -4518,7 +4529,7 @@ MonoBehaviour:
   maxAttackDistance: 0
   AttackHitTime: 0
   AttckAnimationEndTime: 0
-  allowedToMove: 1
+  allowedToMove: 0
 --- !u!1 &1014878051
 GameObject:
   m_ObjectHideFlags: 0
@@ -4597,7 +4608,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1014878054}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1683967091}
+        m_MethodName: BackToMenu
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &1014878054
@@ -4830,7 +4852,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   soldierType: 2
   health: 50
-  damage: 0.5
+  damage: 0.1
   speedMultiplier: 0
   maxFreezeTimer: 0
   fakeWeapon: {fileID: 0}
@@ -7078,12 +7100,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ed8f85e3b30493448d79f98b6809711, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UI: []
+  UI:
+  - {fileID: 135580076}
+  - {fileID: 1014878051}
   manaText: {fileID: 90409061}
   goldText: {fileID: 1118472065}
-  playerPoints: 60
-  playerMana: 60
-  enemyPoints: 40
+  playerPoints: 20
+  playerMana: 10
+  enemyPoints: 10
   factionSpawnPos: {fileID: 168017309}
 --- !u!1 &1685487846
 GameObject:
@@ -8151,7 +8175,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_text: Options
+  m_text: Resume
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 0}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -8228,11 +8252,11 @@ MonoBehaviour:
     lineCount: 1
     pageCount: 1
     materialCount: 1
-  m_havePropertiesChanged: 0
+  m_havePropertiesChanged: 1
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
-  m_isInputParsingRequired: 0
+  m_isInputParsingRequired: 1
   m_inputSource: 0
   m_hasFontAssetChanged: 0
   m_subTextObjects:
@@ -10181,7 +10205,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &2137576364
 MonoBehaviour:
   m_ObjectHideFlags: 0

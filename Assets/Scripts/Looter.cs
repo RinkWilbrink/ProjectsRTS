@@ -11,6 +11,7 @@ public class Looter : MonoBehaviour {
     private GameObject[] goldMine;
     private bool isGathering = false;
     private bool flipper;
+    public static int goldEarned = 10;
 
     private void Start() {
         game = FindObjectOfType<GameController>();
@@ -67,7 +68,7 @@ public class Looter : MonoBehaviour {
                 timer = 0f;
                 if ( factionIndex == 1 ) {
                     LooterController.playerLootersBusy--;
-                    game.playerPoints += 10;
+                    game.playerPoints += goldEarned;
                 } else if ( factionIndex == 2 ) {
                     LooterController.enemyLootersBusy--;
                     game.enemyPoints += 10;

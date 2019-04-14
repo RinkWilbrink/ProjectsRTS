@@ -13,6 +13,7 @@ public class ControlPoint : MonoBehaviour {
     private float swordsmenMaxCapTimer;
     private float mageMaxCapTimer;
     private float maxCapTime = 120f;
+    private Vector3 zonePos;
     /// <summary>
     /// faction index:
     /// 0 = uncapped
@@ -24,12 +25,13 @@ public class ControlPoint : MonoBehaviour {
 
     private void Start() {
         factionCapped = 0;
+        zonePos = new Vector3(transform.position.x, transform.position.y - 3, transform.position.z);
     }
 
     //GameObject[] swordsmen;
     //GameObject[] mages;
     //Vector3 controlPointSize = new Vector3(3, 10, 3);
-    float controlPointSize = 3;
+    float controlPointSize = .1f;
     bool mageInZone;
     bool swordsmenInZone;
     private void Update() {
@@ -50,8 +52,8 @@ public class ControlPoint : MonoBehaviour {
 
         LayerMask swordsLayerMask = LayerMask.GetMask("SwordsLayer");
         LayerMask magesLayerMask = LayerMask.GetMask("MagesLayer");
-        Collider[] swordsmen = Physics.OverlapSphere(transform.position, controlPointSize, swordsLayerMask.value);
-        Collider[] mages = Physics.OverlapSphere(transform.position, controlPointSize, magesLayerMask.value);
+        Collider[] swordsmen = Physics.OverlapSphere(zonePos, controlPointSize, swordsLayerMask.value);
+        Collider[] mages = Physics.OverlapSphere(zonePos, controlPointSize, magesLayerMask.value);
 
         if ( swordsmen.Length == 0 )
             swordsmenInZone = false;
@@ -133,7 +135,7 @@ public class ControlPoint : MonoBehaviour {
     }
 
     private void OnDrawGizmos() {
-        Gizmos.DrawWireSphere(transform.position, controlPointSize);
+        Gizmos.DrawWireSphere(zonePos, .1f);
     }
 
     private void OnGUI() {

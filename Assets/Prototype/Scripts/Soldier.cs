@@ -18,12 +18,13 @@ public class Soldier : MonoBehaviour
     [SerializeField] public float health;
     [SerializeField] public float damage;
     [SerializeField] private int speedMultiplier;
-    [SerializeField] public float maxFreezeTimer;
+    [SerializeField] private float maxFreezeTimer;
 
     // Animation for the Soldiers weapon
     [Header("Weapon animation objects")]
     [SerializeField] private GameObject fakeWeapon;
     [SerializeField] private GameObject RealWeapon;
+    [SerializeField] private GameObject ThrowingPosition;
 
     [Header("Attack Stats")]
     [SerializeField] private float maxAttackSpeed;
@@ -31,19 +32,20 @@ public class Soldier : MonoBehaviour
     [SerializeField] private float AttackHitTime;
     [SerializeField] private float AttckAnimationEndTime;
 
-    [SerializeField] private bool canMove;
-
     // Booleans
-    [HideInInspector] public bool allowedToMove = true;
+    public bool allowedToMove = true;
     private bool isAttacking = false;
     private bool hasHitTarget = false;
+
+    private GameObject freezePotion;
 
     // Timers
     private float TargetDamageTimer = 0;
     private float TimerBetweenAttacks = 0;
-    [HideInInspector] public float FreezeTimer = 0;
-    
+
+    private float FreezeTimer = 0;
     private bool isFrozen = false;
+
     private float position;
     private string attackTag;
 
@@ -79,14 +81,17 @@ public class Soldier : MonoBehaviour
 
     void Update()
     {
-        if (isAttacking)
+        if (isAttacking && !isFrozen)
         {
             TimerBetweenAttacks -= Time.deltaTime;
             if (TimerBetweenAttacks <= 0)
             {
                 allowedToMove = false;
 
-                fakeWeapon.SetActive(false); RealWeapon.SetActive(true);
+                if(soldierType != SoldierType.Mage)
+                {
+                    fakeWeapon.SetActive(false); RealWeapon.SetActive(true);
+                }
 
                 TargetDamageTimer += Time.deltaTime;
 
@@ -94,15 +99,15 @@ public class Soldier : MonoBehaviour
                 {
                     if(soldierType == SoldierType.Mage)
                     {
-                        //l_attackTargets[(int)soldierType].Attack(RealWeapon, ThrowingPosition.transform, attackTag);
-                        GameObject localpotion = Instantiate(RealWeapon, ThrowingPosition.transform.position, ThrowingPosition.transform.rotation);
-                        localpotion.GetComponent<Rigidbody>().AddForce(new Vector3(-5, 4, 0), ForceMode.Impulse);
+                        //l_attackTargets[(int)soldierType].Attack(RealWeapon, ThrowingPosition);
+                        GameObject localPotion = Instantiate(RealWeapon, ThrowingPosition.transform.position, ThrowingPosition.transform.rotation);
+                        localPotion.GetComponent<Rigidbody>().AddForce(new Vector3(-5, 4, 0), ForceMode.Impulse);
+                        freezePotion = localPotion;
                     }
                     else
                     {
                         TargetToAttack.GetComponent<Soldier>().health -= damage;
                     }
-                    TargetToAttack.GetComponent<Soldier>().health -= damage;
                     hasHitTarget = true;
                 }
                 if(TargetDamageTimer >= AttckAnimationEndTime)
@@ -119,7 +124,7 @@ public class Soldier : MonoBehaviour
         }
         else
         {
-            if (allowedToMove && !isFrozen && canMove)
+            if (allowedToMove && !isFrozen)
             {
                 position += speedMultiplier * Time.deltaTime;
             }
@@ -130,17 +135,13 @@ public class Soldier : MonoBehaviour
             try
             {
                 EnemyArray = GameObject.FindGameObjectsWithTag(attackTag);
-                TargetToAttack = GetClosestEnemy(EnemyArray, gameObject.transform);
+                TargetToAttack = GetClosestEnemy(EnemyArray);
             } catch { Debug.Log(gameObject.name + " Couldnt find a target!"); }
         }
-        if(soldierType == SoldierType.Mage)
-        {
-            Debug.Log("maxAttackDistance of " + gameObject.name + ": " + maxAttackDistance);
-            Debug.Log("isAttacking of " + gameObject.name + ": " + isAttacking);
-        }
+
         try
         {
-            if (DistanceBetween(gameObject.transform.position, TargetToAttack.transform.position) <= 5f)
+            if (DistanceBetween(gameObject.transform.position, TargetToAttack.transform.position) <= maxAttackDistance)
             {
                 isAttacking = true;
             }
@@ -155,8 +156,8 @@ public class Soldier : MonoBehaviour
                 allowedToMove = true;
                 TargetToAttack = null;
             }
-        } catch { Debug.Log("There are no targets to attack now! Dammit");  }
-        
+        } catch { Debug.Log("There are no targets to attack now! Dammit"); }
+
         // Check if the soldier should be frozen.
         if(FreezeTimer > 0) { FreezeTimer -= Time.deltaTime; }
         else
@@ -166,22 +167,28 @@ public class Soldier : MonoBehaviour
         {
             transform.position = new Vector3(position, transform.position.y, transform.position.z);
         }
-        if(soldierType != SoldierType.Looter)
+
+        if(freezePotion != null)
         {
-            transform.position = new Vector3(position, transform.position.y, transform.position.z);
+            if(freezePotion.GetComponent<potionDestroying>().hasHit == true)
+            {
+
+            }
         }
-        if ( health <= 0)
+
+        // Check if the Health of this soldier is 0 or less and "Kill" the soldier
+        if (health <= 0)
         {
             Debug.Log(gameObject.name + " has Died");
             Destroy(gameObject);
         }
     }
 
-    private GameObject GetClosestEnemy(GameObject[] enemies, Transform OriginObject)
+    public GameObject GetClosestEnemy(GameObject[] enemies)
     {
         GameObject bestTarget = null;
         float closestDistanceSqr = 15f; // Mathf.Infinity;
-        Vector3 currentPosition = OriginObject.position;
+        Vector3 currentPosition = transform.position;
         foreach (GameObject potentialTarget in enemies)
         {
             Vector3 directionToTarget = potentialTarget.transform.position - currentPosition;
@@ -207,7 +214,7 @@ public class Soldier : MonoBehaviour
         return Mathf.Sqrt((posX * posX) + (posY * posY) + (posZ * posZ));
     }
 
-    public void OnCollisionEnter(Collision collision)
+    private void OnCollisionEnter(Collision collision)
     {
         switch (gameObject.tag)
         {
@@ -226,5 +233,6 @@ public class Soldier : MonoBehaviour
                 }
                 break;
         }
+        
     }
 }
