@@ -148,7 +148,7 @@ public class Soldier : MonoBehaviour
 
         try
         {
-            if (TargetToAttack.GetComponent<Soldier>().Health <= 0)
+            if (TargetToAttack.GetComponent<Soldier>().health <= 0)
             {
                 TimerBetweenAttacks = 0;
                 isAttacking = false;
@@ -170,7 +170,7 @@ public class Soldier : MonoBehaviour
         {
             transform.position = new Vector3(position, transform.position.y, transform.position.z);
         }
-        if (Health <= 0)
+        if ( health <= 0)
         {
             Debug.Log(gameObject.name + " has Died");
             Destroy(gameObject);
