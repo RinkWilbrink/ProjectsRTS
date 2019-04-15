@@ -24,7 +24,6 @@ public class Soldier : MonoBehaviour
     [Header("Weapon animation objects")]
     [SerializeField] private GameObject fakeWeapon;
     [SerializeField] private GameObject RealWeapon;
-    [SerializeField] private GameObject ThrowingPosition;
 
     [Header("Attack Stats")]
     [SerializeField] private float maxAttackSpeed;
@@ -41,7 +40,7 @@ public class Soldier : MonoBehaviour
     private float TargetDamageTimer = 0;
     private float TimerBetweenAttacks = 0;
     [HideInInspector] public float FreezeTimer = 0;
-
+    
     private bool isFrozen = false;
     private float position;
     private string attackTag;
@@ -111,6 +110,7 @@ public class Soldier : MonoBehaviour
                     {
                         TargetToAttack.GetComponent<Soldier>().health -= damage;
                     }
+                    TargetToAttack.GetComponent<Soldier>().Health -= damage;
                     hasHitTarget = true;
                 }
                 if (TargetDamageTimer >= AttckAnimationEndTime)
@@ -154,8 +154,7 @@ public class Soldier : MonoBehaviour
                 isAttacking = true;
                 Debug.Log(gameObject.name + ": " + DistanceBetween(gameObject.transform.position, TargetToAttack.transform.position));
             }
-        }
-        catch { Debug.Log("There is no target to compare its distance to: " + gameObject.name); }
+        } catch { Debug.Log("There is no target to compare its distance to"); }
 
         try
         {
@@ -166,9 +165,8 @@ public class Soldier : MonoBehaviour
                 allowedToMove = true;
                 TargetToAttack = null;
             }
-        }   
-        catch { Debug.Log("There are no targets to attack now! Dammit, " + gameObject.name); }
-
+        } catch { Debug.Log("There are no targets to attack now! Dammit");  }
+        
         // Check if the soldier should be frozen.
         if (FreezeTimer > 0) { FreezeTimer -= Time.deltaTime; }
         else
@@ -178,11 +176,11 @@ public class Soldier : MonoBehaviour
         {
             transform.position = new Vector3(position, transform.position.y, transform.position.z);
         }
-        if (soldierType != SoldierType.Looter)
+        if(soldierType != SoldierType.Looter)
         {
             transform.position = new Vector3(position, transform.position.y, transform.position.z);
         }
-        if (health <= 0)
+        if (Health <= 0)
         {
             Debug.Log(gameObject.name + " has Died");
             Destroy(gameObject);
