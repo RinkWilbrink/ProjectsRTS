@@ -185,7 +185,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 559490941854426755}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -265,16 +265,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   soldierType: 1
-  Health: 1
+  health: 10
   damage: 1
   speedMultiplier: 1
-  allowedToMove: 1
+  maxFreezeTimer: 5
   fakeWeapon: {fileID: 559490941674625481}
   RealWeapon: {fileID: 559490941486537571}
+  ThrowingPosition: {fileID: 0}
   maxAttackSpeed: 1
-  maxAttackDistance: 1.5
+  maxAttackDistance: 2
   AttackHitTime: 0.2
   AttckAnimationEndTime: 0.583
+  canMove: 1
   allowedToMove: 1
   FreezeTimer: 0
 --- !u!1 &559490942454472015

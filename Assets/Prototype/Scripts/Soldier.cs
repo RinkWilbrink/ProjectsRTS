@@ -15,8 +15,8 @@ public class Soldier : MonoBehaviour
     [SerializeField] public SoldierType soldierType;
 
     [Header("Soldier Stats")]
-    [SerializeField] public float Health;
-    [SerializeField] private int damage;
+    [SerializeField] public float health;
+    [SerializeField] public int damage;
     [SerializeField] private int speedMultiplier;
     [SerializeField] public float maxFreezeTimer;
 
@@ -31,8 +31,6 @@ public class Soldier : MonoBehaviour
     [SerializeField] private float maxAttackDistance;
     [SerializeField] private float AttackHitTime;
     [SerializeField] private float AttckAnimationEndTime;
-
-    [SerializeField] private bool canMove;
 
     // Booleans
     [HideInInspector] public bool allowedToMove = true;
@@ -71,11 +69,11 @@ public class Soldier : MonoBehaviour
                 attackTag = "Swordsmen";
                 break;
         }
-        
-        l_attackTargets.Add( new targetAttacking( null ) ); // Looter
-        l_attackTargets.Add( new targetAttacking( new Melee() ) ); // Melee soldier
-        l_attackTargets.Add( new targetAttacking( new Archer() ) ); // Archer soldier
-        l_attackTargets.Add( new targetAttacking( new SpellCaster() ) ); // Spell Caster
+
+        l_attackTargets.Add(new targetAttacking(null)); // Looter
+        l_attackTargets.Add(new targetAttacking(new Melee())); // Melee soldier
+        l_attackTargets.Add(new targetAttacking(new Archer())); // Archer soldier
+        l_attackTargets.Add(new targetAttacking(new SpellCaster())); // Spell Caster
     }
 
     void Update()
@@ -93,19 +91,29 @@ public class Soldier : MonoBehaviour
 
                 if (TargetDamageTimer >= AttackHitTime && hasHitTarget == false)
                 {
-                    if(soldierType == SoldierType.Mage)
+                    if (soldierType == SoldierType.Mage)
                     {
                         //l_attackTargets[(int)soldierType].Attack(RealWeapon, ThrowingPosition.transform, attackTag);
                         GameObject localpotion = Instantiate(RealWeapon, ThrowingPosition.transform.position, ThrowingPosition.transform.rotation);
-                        localpotion.GetComponent<Rigidbody>().AddForce(new Vector3(-5, 4, 0), ForceMode.Impulse);
+                        switch(attackTag)
+                        {
+                            case "Mage":
+                                localpotion.GetComponent<Rigidbody>().AddForce(new Vector3(-5, 4, 0), ForceMode.Impulse);
+                                localpotion.tag = "SwordsmenSpell";
+                                break;
+                            case "Swordsmen":
+                                localpotion.GetComponent<Rigidbody>().AddForce(new Vector3(5, 4, 0), ForceMode.Impulse);
+                                localpotion.tag = "MageSpell";
+                                break;
+                        }
                     }
                     else
                     {
-                        TargetToAttack.GetComponent<Soldier>().Health -= damage;
+                        TargetToAttack.GetComponent<Soldier>().health -= damage;
                     }
                     hasHitTarget = true;
                 }
-                if(TargetDamageTimer >= AttckAnimationEndTime)
+                if (TargetDamageTimer >= AttckAnimationEndTime)
                 {
                     TargetDamageTimer = 0;
                     hasHitTarget = false;
@@ -119,7 +127,7 @@ public class Soldier : MonoBehaviour
         }
         else
         {
-            if (allowedToMove && !isFrozen && canMove)
+            if (allowedToMove && !isFrozen)
             {
                 position += speedMultiplier * Time.deltaTime;
             }
@@ -131,42 +139,50 @@ public class Soldier : MonoBehaviour
             {
                 EnemyArray = GameObject.FindGameObjectsWithTag(attackTag);
                 TargetToAttack = GetClosestEnemy(EnemyArray, gameObject.transform);
-            } catch { /*Debug.Log(gameObject.name + " Couldnt find a target!");*/ }
+            }
+            catch { Debug.Log(gameObject.name + " Couldnt find a target!"); }
         }
-        if(soldierType == SoldierType.Mage)
+        if (soldierType == SoldierType.Mage)
         {
             Debug.Log("maxAttackDistance of " + gameObject.name + ": " + maxAttackDistance);
-            Debug.Log("isAttacking of " + gameObject.name + ": " + isAttacking);
+            //Debug.Log("isAttacking of " + gameObject.name + ": " + isAttacking);
         }
         try
         {
-            if (DistanceBetween(gameObject.transform.position, TargetToAttack.transform.position) <= 5f)
+            if (DistanceBetween(gameObject.transform.position, TargetToAttack.transform.position) <= maxAttackDistance)
             {
                 isAttacking = true;
+                Debug.Log(gameObject.name + ": " + DistanceBetween(gameObject.transform.position, TargetToAttack.transform.position));
             }
-        } catch { /*Debug.Log("There is no target to compare its distance to");*/ }
+        }
+        catch { Debug.Log("There is no target to compare its distance to: " + gameObject.name); }
 
         try
         {
-            if (TargetToAttack.GetComponent<Soldier>().Health <= 0)
+            if (TargetToAttack.GetComponent<Soldier>().health <= 0)
             {
                 TimerBetweenAttacks = 0;
                 isAttacking = false;
                 allowedToMove = true;
                 TargetToAttack = null;
             }
-        } catch { /*Debug.Log("There are no targets to attack now! Dammit"); */ }
+        }   
+        catch { Debug.Log("There are no targets to attack now! Dammit, " + gameObject.name); }
 
         // Check if the soldier should be frozen.
-        if(FreezeTimer > 0) { FreezeTimer -= Time.deltaTime; }
+        if (FreezeTimer > 0) { FreezeTimer -= Time.deltaTime; }
         else
         { isFrozen = false; }
 
-        if(soldierType != SoldierType.Looter )
+        if (soldierType != SoldierType.Looter)
         {
             transform.position = new Vector3(position, transform.position.y, transform.position.z);
         }
-        if (Health <= 0)
+        if (soldierType != SoldierType.Looter)
+        {
+            transform.position = new Vector3(position, transform.position.y, transform.position.z);
+        }
+        if (health <= 0)
         {
             Debug.Log(gameObject.name + " has Died");
             Destroy(gameObject);
@@ -176,7 +192,7 @@ public class Soldier : MonoBehaviour
     private GameObject GetClosestEnemy(GameObject[] enemies, Transform OriginObject)
     {
         GameObject bestTarget = null;
-        float closestDistanceSqr = 15f; // Mathf.Infinity;
+        float closestDistanceSqr = 30f; // Mathf.Infinity;
         Vector3 currentPosition = OriginObject.position;
         foreach (GameObject potentialTarget in enemies)
         {
@@ -222,6 +238,5 @@ public class Soldier : MonoBehaviour
                 }
                 break;
         }
-
     }
 }

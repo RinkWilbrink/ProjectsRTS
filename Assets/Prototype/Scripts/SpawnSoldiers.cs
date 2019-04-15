@@ -8,11 +8,6 @@ public class SpawnSoldiers : MonoBehaviour
 	[SerializeField] GameObject soldier;
 	[SerializeField] private KeyCode kc_SpawnSoldier;
 	
-    void Start()
-    {
-        
-    }
-	
     void Update()
     {
         if(Input.GetKeyDown(kc_SpawnSoldier))
